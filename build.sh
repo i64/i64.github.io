@@ -7,20 +7,17 @@ COMRAK_THEME="Solarized (light)"
 
 
 parse_index () {
-	for f in "$1"/*.md
-	do
-		creation_date_epoch=$(git log --pretty="format:%at" --grep='new post:' "$f" 2> /dev/null | tail -1)
-        # creation_date=$(date -d @$creation_date_epoch '+%m-%d-%Y') 
-
-		title=$(git log --pretty="format:%s" --grep='new post:' "$f" 2> /dev/null | tail -1 | cut -d ' ' -f 3-) 
-
+    for f in "$1"/*.md
+    do
+        creation_date_epoch=$(git log --pretty="format:%at" --grep='new post:' "$f" 2> /dev/null | tail -1)
+        title=$(git log --pretty="format:%s" --grep='new post:' "$f" 2> /dev/null | tail -1 | cut -d ' ' -f 3-) 
         printf '%d\t%s\t%s\n' "$creation_date_epoch" "$f" "$title"
-	done
+    done
 }
 
 create_index() {
     output_path=$OUTPUT_PATH/index.html
-    
+
     cat include/header.html >| $output_path
     cat include/index.html >> $output_path
 
@@ -32,16 +29,15 @@ create_index() {
         echo "<a href=\"pages/$filename\">" >> $output_path
         echo $title >> $output_path
         echo "</a><br/>" >> $output_path
-	done < /dev/stdin
+    done < /dev/stdin
 
     cat include/footer.html >> $output_path
-
 }
 
 create_posts() {
     mkdir -p $PAGES_PATH
-  	for f in "$1"/*.md
-	do
+    for f in "$1"/*.md
+    do
         input_path_without_extension=${f%%.*}/
         output_path=$(echo $PAGES_PATH/`basename ${f%%.*}`)
 
@@ -51,7 +47,7 @@ create_posts() {
         cat include/header.html >| $output_path/index.html
         comrak $f --syntax-highlighting "$COMRAK_THEME" --gfm >> $output_path/index.html
         cat include/footer.html >> $output_path/index.html
-	done  
+    done  
 }
 
 create_posts posts
