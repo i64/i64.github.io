@@ -46,7 +46,7 @@
 <p>el konulan kitabim Introduction to Computer Theory'in namusunu kurtarmak icin yazilan bir yazi. temelde packli pyarmor uygulamasini unpack eylemeyi anlatmaktadir.</p>
 <h2>analiz</h2>
 <p>program calisitirildigi vakit cikti vermiyor.</p>
-<pre lang="shell" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="shell"><code>
 <span style="color:#657b83;">&gt; ./SierraTwo_V2.exe
 </span>
 </code></pre>
@@ -75,7 +75,7 @@
 </span>
 </code></pre>
 <p>tahminimizde dogru ciktik. yani yanilmiyormusuz. pyinstaller kullaniyor ise <a href="https://github.com/extremecoders-re/pyinstxtractor"><code>pyinstxtractor</code></a> yardimi ile icindeki <a href="https://www.python.org/dev/peps/pep-3147/">pyc</a> dosylarini edinebiliriz.</p>
-<pre style="background-color:#fdf6e3;" lang="shell"><code>
+<pre lang="shell" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">&gt; python3.8 pyinstxtractor.py SierraTwo_V2.exe
 </span><span style="color:#657b83;">[+] Processing SierraTwo_V2.exe
 </span><span style="color:#657b83;">[+] Pyinstaller version: 2.1+
@@ -94,7 +94,7 @@
 </span>
 </code></pre>
 <p>cikarttigimmiz dosyayi calistirmak istedigimiz vakit <strong>pytransform</strong> modulunu bulamadigini belirtiyor.</p>
-<pre lang="shell" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="shell"><code>
 <span style="color:#657b83;">SierraTwo_V2.exe_extracted&gt; python3.8 SierraTwo.pyc
 </span><span style="color:#657b83;">Traceback (most recent call last):
 </span><span style="color:#657b83;">  File &quot;dist\obf\SierraTwo.py&quot;, line 2, in &lt;module&gt;
@@ -102,7 +102,7 @@
 </span>
 </code></pre>
 <p><strong>pytransform</strong> ismi aslinda tanidik bir isim. python bytecode packeri olan pyarmor'a ait runtime kutuphanesinin adi. bunu hizlica grepleyip teyit etme imkanimiz bulunmakta.</p>
-<pre style="background-color:#fdf6e3;" lang="shell"><code>
+<pre lang="shell" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">&gt;&gt; grep -rn pyarmor
 </span><span style="color:#657b83;">Binary file PYZ-00.pyz_extracted/config.pyc matches
 </span><span style="color:#657b83;">Binary file PYZ-00.pyz_extracted/pytransform.pyc matches
@@ -132,7 +132,7 @@
 <p>cok sansliyiz ki kutuphane bagimli bir kod cikti. <strong>kutuphane bagimliligi</strong> = <strong>library hijacking</strong> slack.py diye bir dosya olusturup icine istedigimiz icerigi koyabiliriz.
 oncelikle import edildigimizden dolayi callstack'te alakali frame'e gidip etrafi yoklamamiz gerekiyor. bundan dolayi oncelik ile frameleri yoklayalim.
 burada bilgilendirici olsun diye inspect ile yapiyorum yoksa <strong>import pdb; pdb.set_trace()</strong> denilip bir pdb shelli spawnlanabilir.</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#cb4b16;">import </span><span style="color:#657b83;">inspect
 </span><span style="color:#657b83;">
 </span><span style="color:#859900;">for </span><span style="color:#657b83;">frameinfo </span><span style="color:#859900;">in </span><span style="color:#657b83;">inspect.</span><span style="color:#b58900;">stack</span><span style="color:#657b83;">():
@@ -151,7 +151,7 @@ burada bilgilendirici olsun diye inspect ile yapiyorum yoksa <strong>import pdb;
 </span>
 </code></pre>
 <p>bizi alakadar eden frame'in 0x000001FA7D4971F0'te ki frame oldugu bariz goruluyor. bundan mutevellit bu frame'i incelemek uzere bir yerlere tutturabiliriz.</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">frame = inspect.</span><span style="color:#b58900;">stack</span><span style="color:#657b83;">()</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">6</span><span style="color:#268bd2;">]
 </span>
 </code></pre>
@@ -181,13 +181,13 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>daha sonra ise bu fonksiyonlarda ki degiskenleri bastirabilirsek belki yararli bir seyler elde edebiliriz.</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#859900;">for </span><span style="color:#657b83;">idx, obj </span><span style="color:#859900;">in enumerate</span><span style="color:#657b83;">(c.co_consts):
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">inspect.</span><span style="color:#b58900;">iscode</span><span style="color:#657b83;">(obj):
 </span><span style="color:#657b83;">        </span><span style="color:#859900;">print</span><span style="color:#657b83;">(idx, obj.co_name, obj.co_consts)
 </span>
 </code></pre>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#6c71c4;">5 </span><span style="color:#b58900;">prepare_shell </span><span style="color:#657b83;">(</span><span style="color:#b58900;">None</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channels</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">id</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">users</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">), (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">text</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">), (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,), </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">messages</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">ts</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">timestamp</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">))
 </span><span style="color:#6c71c4;">7 </span><span style="color:#b58900;">create_channel </span><span style="color:#657b83;">(</span><span style="color:#b58900;">None</span><span style="color:#657b83;">, (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">name</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,))
 </span><span style="color:#6c71c4;">9 </span><span style="color:#b58900;">next_channel </span><span style="color:#657b83;">(</span><span style="color:#b58900;">None</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">name</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">-</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">2</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">1</span><span style="color:#657b83;">)
@@ -219,7 +219,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>ama uzucu bir sekilde bu fonksiyon bize bir sey dondurmuyor. <a href="https://docs.python.org/3/library/dis.html"><strong>dis</strong></a> kutuphanesini kullanarak bytecode'u disassemble edebiliriz.</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#cb4b16;">import </span><span style="color:#657b83;">dis
 </span><span style="color:#657b83;">dis.</span><span style="color:#b58900;">dis</span><span style="color:#657b83;">(respawn)
 </span>
@@ -279,7 +279,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>fakat malesef hayal kirikligina ugradik. pyarmor'un dokumantasyonuna bakar isek bunun <a href="https://pyarmor.readthedocs.io/en/latest/mode.html?highlight=__armor_enter__#wrap-mode">wrap-mode</a> ozelligi oldugunu gorebiliriz</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#268bd2;">LOAD_GLOBALS    </span><span style="color:#b58900;">N </span><span style="color:#657b83;">(__armor_enter__)     N = length of co_consts
 </span><span style="color:#268bd2;">CALL_FUNCTION   </span><span style="color:#6c71c4;">0
 </span><span style="color:#268bd2;">POP_TOP
@@ -296,7 +296,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 <p>su yapiya gore <strong><strong>armor_enter</strong></strong> kendi referansini alip aradaki bytecode araligini guncelliyor.</p>
 <p>bu durumda yapabilecegimiz iki durum var. ilki cpython'a ufak bir patch atmak digeri ise extension'u/library'i reverslemek. buyuk ihtimalle cpython'u patchlemek daha kolay ve hizli olacaktir.</p>
 <p>cpython'da bildigimiz uzere bytecode'lar <strong>ceval.c</strong> uzerinde isleniyor. sorunumuz polimorfik bir codeobject oldugundan dolayi sadece calisan bytecodelari dumplayacagiz. yani switch_case'den hemen once byte-codelari dumplamamiz yeterlidir.</p>
-<pre style="background-color:#fdf6e3;" lang="diff"><code>
+<pre lang="diff" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">@@ -759,6 +759,11 @@</span><span style="color:#657b83;"> _PyEval_EvalFrameDefault(PyFrameObject *f, int throwflag)
 </span><span style="color:#657b83;">     _Py_atomic_int * const eval_breaker = &amp;ceval-&gt;eval_breaker;
 </span><span style="color:#657b83;">     PyCodeObject *co;
@@ -354,12 +354,12 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>peki kodumuzu guncelledik. respawn fonksiyonunu bir defa calistirmamiz gerekiyor.</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#859900;">exec</span><span style="color:#657b83;">(respawn)
 </span>
 </code></pre>
 <p>simdi <strong>respawn.bin</strong> dosyasina goz atabiliriz.</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">dis.</span><span style="color:#b58900;">dis</span><span style="color:#657b83;">(respawn.</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">co_code</span><span style="color:#657b83;">=</span><span style="color:#859900;">open</span><span style="color:#657b83;">(</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">respawn.bin</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">rb</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">read</span><span style="color:#657b83;">()), </span><span style="color:#268bd2;">depth</span><span style="color:#657b83;">=</span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">)
 </span>
 </code></pre>
@@ -435,18 +435,18 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>yani varxor kabaca bize hexstring xor yapiyor. suanlik boyle kabul edilebilir gibi. hata olursa tekrar bir goz atariz</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">lambda a</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">b</span><span style="color:#657b83;">: a </span><span style="color:#859900;">and </span><span style="color:#657b83;">b </span><span style="color:#859900;">and hex</span><span style="color:#657b83;">(</span><span style="color:#859900;">int</span><span style="color:#657b83;">(a, </span><span style="color:#6c71c4;">16</span><span style="color:#657b83;">) ^ </span><span style="color:#859900;">int</span><span style="color:#657b83;">(b, </span><span style="color:#6c71c4;">16</span><span style="color:#657b83;">))</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">2</span><span style="color:#657b83;">:</span><span style="color:#268bd2;">]
 </span>
 </code></pre>
 <p>bayagi bir degisken olsuturduktan sonra eger main ise calistirdigi bir kisim bulunuyor. bundan dolayi onu main olduguna dair ikna etmemiz gerekiyor.</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#859900;">exec</span><span style="color:#657b83;">(respawn, </span><span style="color:#859900;">exec</span><span style="color:#657b83;">(respawn, {</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">__name__</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">: </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">__main__</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">}))
 </span><span style="color:#657b83;">dis.</span><span style="color:#b58900;">dis</span><span style="color:#657b83;">(respawn.</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">co_code</span><span style="color:#657b83;">=</span><span style="color:#859900;">open</span><span style="color:#657b83;">(</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">respawn.bin</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">rb</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">read</span><span style="color:#657b83;">()), </span><span style="color:#268bd2;">depth</span><span style="color:#657b83;">=</span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">)
 </span>
 </code></pre>
 <p>(kodun tamami degil, sadece eksik kismi budur)</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#6c71c4;">408         946 </span><span style="color:#268bd2;">STORE_FAST             </span><span style="color:#6c71c4;">230 </span><span style="color:#657b83;">(varxor)
 </span><span style="color:#657b83;">            </span><span style="color:#6c71c4;">948 </span><span style="color:#268bd2;">LOAD_GLOBAL              </span><span style="color:#6c71c4;">0 </span><span style="color:#657b83;">(</span><span style="color:#859900;">__name__</span><span style="color:#657b83;">)
 </span><span style="color:#657b83;">            </span><span style="color:#6c71c4;">950 </span><span style="color:#268bd2;">LOAD_CONST             </span><span style="color:#6c71c4;">123 </span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">__main__</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
@@ -515,7 +515,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>locals dinamik bir yapi fakat degiskenlere sadece bir defa atama gerceklestiriliyor. <strong>dis</strong> kutuphanesinden <strong>get_instruction</strong> fonksiyonunu kullanip kod uzerinden hizlica construct edilebilir</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#268bd2;">STORE_FAST </span><span style="color:#657b83;">= opcode.opmap</span><span style="color:#268bd2;">[</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">STORE_FAST</span><span style="color:#839496;">&quot;</span><span style="color:#268bd2;">]
 </span><span style="color:#268bd2;">LOAD_CONST </span><span style="color:#657b83;">= opcode.opmap</span><span style="color:#268bd2;">[</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">LOAD_CONST</span><span style="color:#839496;">&quot;</span><span style="color:#268bd2;">]
 </span><span style="color:#657b83;">

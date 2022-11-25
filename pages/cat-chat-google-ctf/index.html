@@ -65,7 +65,7 @@
 </ul>
 <h3>Analiz ve hata keşfi</h3>
 <p>Kaynak koduna baktığımızda(html source)</p>
-<pre style="background-color:#fdf6e3;" lang="html"><code>
+<pre lang="html" style="background-color:#fdf6e3;"><code>
 <span style="color:#93a1a1;">&lt;!</span><span style="color:#268bd2;">DOCTYPE</span><span style="color:#657b83;"> html</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">html</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">head</span><span style="color:#93a1a1;">&gt;
@@ -107,7 +107,7 @@
 </ul>
 <h4>Server-side kod inceleme</h4>
 <p>Back-end tarafını bizimle paylaşmıştı <a href="https://github.com/CyberSaxosTiGER/CyberSaxosTiGER.github.io/blob/master/files/server.js">server.js</a></p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">const </span><span style="color:#859900;">http </span><span style="color:#657b83;">= </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">http</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
 </span><span style="color:#268bd2;">const </span><span style="color:#657b83;">express = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">express</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
 </span><span style="color:#268bd2;">const </span><span style="color:#657b83;">cookieParser = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">cookie-parser</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
@@ -118,7 +118,7 @@
 </span>
 </code></pre>
 <p>Temal kütüphane importları ve <strong>admin.js</strong>'i import ediyor. Malesef <strong>admin.js</strong>'e erişimimiz yok</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#268bd2;">const </span><span style="color:#657b83;">app = </span><span style="color:#b58900;">express</span><span style="color:#657b83;">();
 </span><span style="color:#657b83;">app.</span><span style="color:#b58900;">set</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">etag</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#b58900;">false</span><span style="color:#657b83;">);
 </span><span style="color:#657b83;">app.</span><span style="color:#b58900;">use</span><span style="color:#657b83;">(</span><span style="color:#b58900;">cookieParser</span><span style="color:#657b83;">());
@@ -142,7 +142,7 @@
 </span>
 </code></pre>
 <p>Kullanıcı'nın banlı olup olmadığını kontrol ediyor. Eğer banlı ise <strong>403</strong> sayfasına yönlendiriyor.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#657b83;">app.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, (</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) </span><span style="color:#268bd2;">=&gt; </span><span style="color:#657b83;">res.</span><span style="color:#b58900;">redirect</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">/room/</span><span style="color:#657b83;">${</span><span style="color:#b58900;">uuidv4</span><span style="color:#657b83;">()}</span><span style="color:#2aa198;">/</span><span style="color:#839496;">`</span><span style="color:#657b83;">));
 </span><span style="color:#268bd2;">let </span><span style="color:#657b83;">roomPath = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/room/:room([0-9a-f-]{36})</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">app.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(roomPath + </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) {
@@ -202,14 +202,14 @@
 </span>
 </code></pre>
 <p>Geldik mesajlar kısmına.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#657b83;"> </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(req.headers.referer </span><span style="color:#859900;">|| </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#859900;">^</span><span style="color:#2aa198;">https</span><span style="color:#859900;">?</span><span style="color:#2aa198;">:</span><span style="color:#dc322f;">\/\/</span><span style="color:#839496;">/</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">startsWith</span><span style="color:#657b83;">(req.headers.host)) {
 </span><span style="color:#657b83;">    response = {type: </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">error</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, error: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">CSRF protection error</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">};
 </span><span style="color:#657b83;"> }
 </span>
 </code></pre>
 <p><strong>Refer</strong> based CSRF koruması varmış.</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#859900;">else if </span><span style="color:#657b83;">(msg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">0</span><span style="color:#268bd2;">] </span><span style="color:#657b83;">!= </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">) {
 </span><span style="color:#657b83;">    </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">msg</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name, msg});
 </span><span style="color:#657b83;">}
@@ -225,7 +225,7 @@
 </span>
 </code></pre>
 <p><strong>/name</strong> ise isim değiştir</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/ban</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">ban (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">req.admin) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
@@ -241,7 +241,7 @@
 </span>
 </code></pre>
 <p><strong>/secret xxx</strong> ise <strong>flag</strong> cookiesini <strong>xxx</strong> olarak set et.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/report</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">report (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">    </span><span style="color:#268bd2;">var </span><span style="color:#657b83;">ip = req.headers</span><span style="color:#268bd2;">[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">x-forwarded-for</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">;
@@ -258,7 +258,7 @@
 </ul>
 <h4>Client-side kod inceleme</h4>
 <p>Geldik Client-side kod inceleme kısmına <a href="https://github.com/CyberSaxosTiGER/CyberSaxosTiGER.github.io/blob/master/files/cat-chat.js">cat-chat.js</a></p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">let </span><span style="color:#b58900;">esc </span><span style="color:#657b83;">= (</span><span style="color:#268bd2;">str</span><span style="color:#657b83;">) </span><span style="color:#268bd2;">=&gt; </span><span style="color:#657b83;">str.</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&lt;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;lt;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&gt;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;gt;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&quot;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;quot;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&#39;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;apos;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
 </span>
 </code></pre>
@@ -303,14 +303,14 @@
 </span>
 </code></pre>
 <p><strong>CSP</strong>'yi hatırlayalım. <strong>style-src</strong>, <strong>unsafe-inline</strong> olarak ayarlanmış.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#657b83;"> </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">Successfully changed secret to &lt;span data-secret=&quot;</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(</span><span style="color:#b58900;">cookie</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">))}</span><span style="color:#2aa198;">&quot;&gt;*****&lt;/span&gt;</span><span style="color:#839496;">`
 </span>
 </code></pre>
 <p><strong>/secret</strong> ile <strong>flag</strong>'i değiştirdiğimiz zaman <strong>flag</strong> değeri <strong>data-secret</strong> attribute'una değişen hali yazılıyormuş.</p>
 <p><img src="cat-chat3.png" alt="nou" /></p>
 <p>Bunuda köşeye yazalım</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;"> was banned.&lt;style&gt;span[data-name^=</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;">] { color: red; }&lt;/style&gt;</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
 </span>
 </code></pre>
@@ -326,7 +326,7 @@
 <p>Flag değerini <strong>data-secret</strong> attribute'una değişen hali yazdığını hatırlayalım.</p>
 <p><strong>flag</strong>'i değiştirmeden <strong>data-secret</strong> değerine yazdırmamız gerekiyor.</p>
 <p><strong>server.js</strong>'e tekrar dönüp bakalım</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/secret</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
 </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">secret (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">res.</span><span style="color:#b58900;">setHeader</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">Set-Cookie</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag=</span><span style="color:#839496;">&#39; </span><span style="color:#657b83;">+ arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">] </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">; Path=/; Max-Age=31536000</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);

