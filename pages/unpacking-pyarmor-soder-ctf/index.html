@@ -75,7 +75,7 @@
 </span>
 </code></pre>
 <p>tahminimizde dogru ciktik. yani yanilmiyormusuz. pyinstaller kullaniyor ise <a href="https://github.com/extremecoders-re/pyinstxtractor"><code>pyinstxtractor</code></a> yardimi ile icindeki <a href="https://www.python.org/dev/peps/pep-3147/">pyc</a> dosylarini edinebiliriz.</p>
-<pre lang="shell" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="shell"><code>
 <span style="color:#657b83;">&gt; python3.8 pyinstxtractor.py SierraTwo_V2.exe
 </span><span style="color:#657b83;">[+] Processing SierraTwo_V2.exe
 </span><span style="color:#657b83;">[+] Pyinstaller version: 2.1+
@@ -94,7 +94,7 @@
 </span>
 </code></pre>
 <p>cikarttigimmiz dosyayi calistirmak istedigimiz vakit <strong>pytransform</strong> modulunu bulamadigini belirtiyor.</p>
-<pre style="background-color:#fdf6e3;" lang="shell"><code>
+<pre lang="shell" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">SierraTwo_V2.exe_extracted&gt; python3.8 SierraTwo.pyc
 </span><span style="color:#657b83;">Traceback (most recent call last):
 </span><span style="color:#657b83;">  File &quot;dist\obf\SierraTwo.py&quot;, line 2, in &lt;module&gt;
@@ -139,7 +139,7 @@ burada bilgilendirici olsun diye inspect ile yapiyorum yoksa <strong>import pdb;
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">print</span><span style="color:#657b83;">(frameinfo.frame)
 </span>
 </code></pre>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">&lt;frame at </span><span style="color:#6c71c4;">0x000001FA7D4BB1E0</span><span style="color:#657b83;">, file </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">asykrem</span><span style="color:#dc322f;">\\</span><span style="color:#2aa198;">slack.py</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, line </span><span style="color:#6c71c4;">7</span><span style="color:#657b83;">, code &lt;module&gt;&gt;
 </span><span style="color:#657b83;">&lt;frame at </span><span style="color:#6c71c4;">0x000001FA7D497550</span><span style="color:#657b83;">, file </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&lt;frozen importlib._bootstrap&gt;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, line </span><span style="color:#6c71c4;">219</span><span style="color:#657b83;">, code _call_with_frames_removed&gt;
 </span><span style="color:#657b83;">&lt;frame at </span><span style="color:#6c71c4;">0x000001FA7D488900</span><span style="color:#657b83;">, file </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&lt;frozen importlib._bootstrap_external&gt;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, line </span><span style="color:#6c71c4;">783</span><span style="color:#657b83;">, code exec_module&gt;
@@ -157,7 +157,7 @@ burada bilgilendirici olsun diye inspect ile yapiyorum yoksa <strong>import pdb;
 </code></pre>
 <p>bildigimiz python'da bytecode'ta kullanilmak uzere degisken isimleri ve constant degerleri kod objesi ile birlikte geliyor.
 yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#657b83;">c = frame.f_code
 </span><span style="color:#657b83;">
 </span><span style="color:#859900;">for </span><span style="color:#657b83;">idx, obj </span><span style="color:#859900;">in enumerate</span><span style="color:#657b83;">(c.co_consts):
@@ -165,7 +165,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span><span style="color:#657b83;">        </span><span style="color:#859900;">print</span><span style="color:#657b83;">(idx, obj.co_name)
 </span>
 </code></pre>
-<pre lang="shell" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="shell"><code>
 <span style="color:#657b83;">5 prepare_shell
 </span><span style="color:#657b83;">7 create_channel
 </span><span style="color:#657b83;">9 next_channel
@@ -219,12 +219,12 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>ama uzucu bir sekilde bu fonksiyon bize bir sey dondurmuyor. <a href="https://docs.python.org/3/library/dis.html"><strong>dis</strong></a> kutuphanesini kullanarak bytecode'u disassemble edebiliriz.</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#cb4b16;">import </span><span style="color:#657b83;">dis
 </span><span style="color:#657b83;">dis.</span><span style="color:#b58900;">dis</span><span style="color:#657b83;">(respawn)
 </span>
 </code></pre>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#6c71c4;">167           0 </span><span style="color:#268bd2;">JUMP_ABSOLUTE           </span><span style="color:#6c71c4;">18
 </span><span style="color:#657b83;">              </span><span style="color:#6c71c4;">2 </span><span style="color:#268bd2;">NOP
 </span><span style="color:#657b83;">
@@ -279,7 +279,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>fakat malesef hayal kirikligina ugradik. pyarmor'un dokumantasyonuna bakar isek bunun <a href="https://pyarmor.readthedocs.io/en/latest/mode.html?highlight=__armor_enter__#wrap-mode">wrap-mode</a> ozelligi oldugunu gorebiliriz</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">LOAD_GLOBALS    </span><span style="color:#b58900;">N </span><span style="color:#657b83;">(__armor_enter__)     N = length of co_consts
 </span><span style="color:#268bd2;">CALL_FUNCTION   </span><span style="color:#6c71c4;">0
 </span><span style="color:#268bd2;">POP_TOP
@@ -363,7 +363,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 <span style="color:#657b83;">dis.</span><span style="color:#b58900;">dis</span><span style="color:#657b83;">(respawn.</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">co_code</span><span style="color:#657b83;">=</span><span style="color:#859900;">open</span><span style="color:#657b83;">(</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">respawn.bin</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">rb</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">read</span><span style="color:#657b83;">()), </span><span style="color:#268bd2;">depth</span><span style="color:#657b83;">=</span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">)
 </span>
 </code></pre>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#6c71c4;">167           0 </span><span style="color:#268bd2;">JUMP_ABSOLUTE           </span><span style="color:#6c71c4;">18
 </span><span style="color:#657b83;">              </span><span style="color:#6c71c4;">2 </span><span style="color:#268bd2;">LOAD_GLOBAL              </span><span style="color:#6c71c4;">2 </span><span style="color:#657b83;">(__armor_enter__)
 </span><span style="color:#657b83;">
@@ -505,7 +505,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>yukaridaki bytecodun tahmini karsiligi su sekilde</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#859900;">while </span><span style="color:#657b83;">i &lt;= </span><span style="color:#6c71c4;">37</span><span style="color:#657b83;">:
 </span><span style="color:#657b83;">    a = </span><span style="color:#859900;">locals</span><span style="color:#657b83;">()</span><span style="color:#268bd2;">[f</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">a</span><span style="color:#657b83;">{i}</span><span style="color:#839496;">&quot;</span><span style="color:#268bd2;">]
 </span><span style="color:#657b83;">    b = </span><span style="color:#859900;">locals</span><span style="color:#657b83;">()</span><span style="color:#268bd2;">[f</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">b</span><span style="color:#657b83;">{i}</span><span style="color:#839496;">&quot;</span><span style="color:#268bd2;">]
