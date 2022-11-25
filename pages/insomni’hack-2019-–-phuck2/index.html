@@ -46,7 +46,7 @@
 <p>Another year, another PH(P)uck. Have fun with that !</p>
 <p><a href="http://phuck.teaser.insomnihack.ch/?hl=1">http://phuck.teaser.insomnihack.ch/?hl=1</a></p>
 <p><a href="http://phuck.teaser.insomnihack.ch/phpinfo.php">http://phuck.teaser.insomnihack.ch/phpinfo.php</a></p>
-<pre lang="php" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="php"><code>
 <span style="color:#657b83;">&lt;?php
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">stream_wrapper_unregister</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">php</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">if</span><span style="color:#657b83;">(</span><span style="color:#dc322f;">isset</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">hl</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">)) </span><span style="color:#859900;">highlight_file</span><span style="color:#657b83;">(</span><span style="color:#b58900;">__FILE__</span><span style="color:#657b83;">);
@@ -92,7 +92,7 @@
 </code></pre>
 <p><strong>escapeshellarg</strong> ifadesini geçemeyeceğimiz için bura ile uğraşmamıza gerek yok</p>
 <hr />
-<pre lang="php" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="php"><code>
 <span style="color:#657b83;">$randFolder = bin2hex(random_bytes(16));
 </span><span style="color:#657b83;">$mkdir(&#39;users/&#39;.$randFolder);
 </span><span style="color:#657b83;">chdir(&#39;users/&#39;.$randFolder);
@@ -117,7 +117,7 @@
 </code></pre>
 <p><strong>$userFolder</strong> değeri ile klasör açar ve o klasörün içine <strong>profile</strong> adlı dosyaya <a href="http://php.net/manual/tr/reserved.variables.server.php"><strong>$_SERVER</strong> arrayinin</a> içeriğini yazar.</p>
 <hr />
-<pre lang="php" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="php"><code>
 <span style="color:#657b83;">$_GET[&#39;page&#39;]=str_replace(&#39;.&#39;,&#39;&#39;,$_GET[&#39;page&#39;]);
 </span><span style="color:#657b83;">
 </span><span style="color:#657b83;">if(!stripos(file_get_contents($_GET[&#39;page&#39;]),&#39;&lt;?</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">) &amp;&amp; !stripos(file_get_contents($_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#cb4b16;">page</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">]),</span><span style="color:#839496;">&#39;</span><span style="color:#cb4b16;">php</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">)) {
