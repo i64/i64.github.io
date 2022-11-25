@@ -61,7 +61,7 @@
 </span>
 </code></pre>
 <p>Bahsi gecen  <code>WSDL</code> sayfasina gidilince assagidaki <strong>WSDL</strong> formu karsimiza cikti.</p>
-<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<pre lang="xml" style="background-color:#fdf6e3;"><code>
 <span style="color:#93a1a1;">&lt;?</span><span style="color:#268bd2;">xml </span><span style="color:#b58900;">version</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">1.0</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">encoding</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">utf-8</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">?&gt;
 </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">wsdl:definitions </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">Bank</span><span style="color:#839496;">&quot;
 </span><span style="color:#b58900;">targetNamespace</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot;
@@ -129,7 +129,7 @@
 </code></pre>
 <p>Buna forma gore iki adet <code>SOAP API</code> endpointine sahip oldugumuzu ogrendik.</p>
 <p>Ilki bakiye sorgulama</p>
-<pre lang="xml" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
 <span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Envelope </span><span style="color:#b58900;">xmlns:xsi</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema-instance</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsd</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:soapenv</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/envelope/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:urn</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Header</span><span style="color:#93a1a1;">/&gt;
 </span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Body</span><span style="color:#93a1a1;">&gt;
@@ -194,7 +194,7 @@
 </span>
 </code></pre>
 <p><strong>amount</strong> kısmına ise;</p>
-<pre lang="xml" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
 <span style="color:#657b83;">--&gt; 200
 </span>
 </code></pre>
@@ -220,7 +220,7 @@
 </span>
 </code></pre>
 <p>Alakali istekte <code>host header injection</code> oldugunu farkettik. Boylece endpointi zehirleyip api istegindeki tokeni calabiliriz.</p>
-<pre lang="bash" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="bash"><code>
 <span style="color:#b58900;">ngrep</span><span style="color:#268bd2;"> -q -d</span><span style="color:#657b83;"> ens160</span><span style="color:#268bd2;"> -W</span><span style="color:#657b83;"> byline port 80
 </span>
 </code></pre>

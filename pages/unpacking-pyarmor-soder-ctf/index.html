@@ -51,7 +51,7 @@
 </span>
 </code></pre>
 <p>hizlica bilindik bir string var mi diye kontrol etmek icin hata mesajlari icin ufak bir grep atmak bazen iyi bir fikir olabilir.</p>
-<pre lang="shell" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="shell"><code>
 <span style="color:#657b83;">[0x140008b14]&gt; iz ~ Err
 </span><span style="color:#657b83;">1    0x00021df8 0x1400233f8 38   39   .rdata  ascii   Error allocating decompression buffer\n
 </span><span style="color:#657b83;">3    0x00021e28 0x140023428 26   27   .rdata  ascii   Error %d from inflate: %s\n
@@ -94,7 +94,7 @@
 </span>
 </code></pre>
 <p>cikarttigimmiz dosyayi calistirmak istedigimiz vakit <strong>pytransform</strong> modulunu bulamadigini belirtiyor.</p>
-<pre style="background-color:#fdf6e3;" lang="shell"><code>
+<pre lang="shell" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">SierraTwo_V2.exe_extracted&gt; python3.8 SierraTwo.pyc
 </span><span style="color:#657b83;">Traceback (most recent call last):
 </span><span style="color:#657b83;">  File &quot;dist\obf\SierraTwo.py&quot;, line 2, in &lt;module&gt;
@@ -102,7 +102,7 @@
 </span>
 </code></pre>
 <p><strong>pytransform</strong> ismi aslinda tanidik bir isim. python bytecode packeri olan pyarmor'a ait runtime kutuphanesinin adi. bunu hizlica grepleyip teyit etme imkanimiz bulunmakta.</p>
-<pre lang="shell" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="shell"><code>
 <span style="color:#657b83;">&gt;&gt; grep -rn pyarmor
 </span><span style="color:#657b83;">Binary file PYZ-00.pyz_extracted/config.pyc matches
 </span><span style="color:#657b83;">Binary file PYZ-00.pyz_extracted/pytransform.pyc matches
@@ -165,7 +165,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span><span style="color:#657b83;">        </span><span style="color:#859900;">print</span><span style="color:#657b83;">(idx, obj.co_name)
 </span>
 </code></pre>
-<pre lang="shell" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="shell"><code>
 <span style="color:#657b83;">5 prepare_shell
 </span><span style="color:#657b83;">7 create_channel
 </span><span style="color:#657b83;">9 next_channel
@@ -187,7 +187,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span><span style="color:#657b83;">        </span><span style="color:#859900;">print</span><span style="color:#657b83;">(idx, obj.co_name, obj.co_consts)
 </span>
 </code></pre>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#6c71c4;">5 </span><span style="color:#b58900;">prepare_shell </span><span style="color:#657b83;">(</span><span style="color:#b58900;">None</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channels</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">id</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">users</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">), (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">text</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">), (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,), </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">messages</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">ts</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">channel</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">timestamp</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">))
 </span><span style="color:#6c71c4;">7 </span><span style="color:#b58900;">create_channel </span><span style="color:#657b83;">(</span><span style="color:#b58900;">None</span><span style="color:#657b83;">, (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">name</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,))
 </span><span style="color:#6c71c4;">9 </span><span style="color:#b58900;">next_channel </span><span style="color:#657b83;">(</span><span style="color:#b58900;">None</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">name</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">-</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">2</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">1</span><span style="color:#657b83;">)
@@ -219,12 +219,12 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>ama uzucu bir sekilde bu fonksiyon bize bir sey dondurmuyor. <a href="https://docs.python.org/3/library/dis.html"><strong>dis</strong></a> kutuphanesini kullanarak bytecode'u disassemble edebiliriz.</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#cb4b16;">import </span><span style="color:#657b83;">dis
 </span><span style="color:#657b83;">dis.</span><span style="color:#b58900;">dis</span><span style="color:#657b83;">(respawn)
 </span>
 </code></pre>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#6c71c4;">167           0 </span><span style="color:#268bd2;">JUMP_ABSOLUTE           </span><span style="color:#6c71c4;">18
 </span><span style="color:#657b83;">              </span><span style="color:#6c71c4;">2 </span><span style="color:#268bd2;">NOP
 </span><span style="color:#657b83;">
@@ -279,7 +279,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>fakat malesef hayal kirikligina ugradik. pyarmor'un dokumantasyonuna bakar isek bunun <a href="https://pyarmor.readthedocs.io/en/latest/mode.html?highlight=__armor_enter__#wrap-mode">wrap-mode</a> ozelligi oldugunu gorebiliriz</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">LOAD_GLOBALS    </span><span style="color:#b58900;">N </span><span style="color:#657b83;">(__armor_enter__)     N = length of co_consts
 </span><span style="color:#268bd2;">CALL_FUNCTION   </span><span style="color:#6c71c4;">0
 </span><span style="color:#268bd2;">POP_TOP
@@ -296,7 +296,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 <p>su yapiya gore <strong><strong>armor_enter</strong></strong> kendi referansini alip aradaki bytecode araligini guncelliyor.</p>
 <p>bu durumda yapabilecegimiz iki durum var. ilki cpython'a ufak bir patch atmak digeri ise extension'u/library'i reverslemek. buyuk ihtimalle cpython'u patchlemek daha kolay ve hizli olacaktir.</p>
 <p>cpython'da bildigimiz uzere bytecode'lar <strong>ceval.c</strong> uzerinde isleniyor. sorunumuz polimorfik bir codeobject oldugundan dolayi sadece calisan bytecodelari dumplayacagiz. yani switch_case'den hemen once byte-codelari dumplamamiz yeterlidir.</p>
-<pre lang="diff" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="diff"><code>
 <span style="color:#268bd2;">@@ -759,6 +759,11 @@</span><span style="color:#657b83;"> _PyEval_EvalFrameDefault(PyFrameObject *f, int throwflag)
 </span><span style="color:#657b83;">     _Py_atomic_int * const eval_breaker = &amp;ceval-&gt;eval_breaker;
 </span><span style="color:#657b83;">     PyCodeObject *co;
@@ -354,7 +354,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>peki kodumuzu guncelledik. respawn fonksiyonunu bir defa calistirmamiz gerekiyor.</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#859900;">exec</span><span style="color:#657b83;">(respawn)
 </span>
 </code></pre>
@@ -420,7 +420,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>varxor'ada bakalim fakat varxor'da packli. tekrardan dumplamaya eriniyorsak(-ki ben erindim) elimizle bir kac deneme yapabiliriz.</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#859900;">def </span><span style="color:#b58900;">varxor</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">a</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">b</span><span style="color:#657b83;">): </span><span style="color:#859900;">pass
 </span><span style="color:#657b83;">varxor.</span><span style="color:#859900;">__code__ </span><span style="color:#657b83;">= respawn.co_consts</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">respawn.co_consts.</span><span style="color:#b58900;">index</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">ad</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">) + </span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]
 </span><span style="color:#657b83;">
@@ -435,12 +435,12 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>yani varxor kabaca bize hexstring xor yapiyor. suanlik boyle kabul edilebilir gibi. hata olursa tekrar bir goz atariz</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#268bd2;">lambda a</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">b</span><span style="color:#657b83;">: a </span><span style="color:#859900;">and </span><span style="color:#657b83;">b </span><span style="color:#859900;">and hex</span><span style="color:#657b83;">(</span><span style="color:#859900;">int</span><span style="color:#657b83;">(a, </span><span style="color:#6c71c4;">16</span><span style="color:#657b83;">) ^ </span><span style="color:#859900;">int</span><span style="color:#657b83;">(b, </span><span style="color:#6c71c4;">16</span><span style="color:#657b83;">))</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">2</span><span style="color:#657b83;">:</span><span style="color:#268bd2;">]
 </span>
 </code></pre>
 <p>bayagi bir degisken olsuturduktan sonra eger main ise calistirdigi bir kisim bulunuyor. bundan dolayi onu main olduguna dair ikna etmemiz gerekiyor.</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#859900;">exec</span><span style="color:#657b83;">(respawn, </span><span style="color:#859900;">exec</span><span style="color:#657b83;">(respawn, {</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">__name__</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">: </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">__main__</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">}))
 </span><span style="color:#657b83;">dis.</span><span style="color:#b58900;">dis</span><span style="color:#657b83;">(respawn.</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">co_code</span><span style="color:#657b83;">=</span><span style="color:#859900;">open</span><span style="color:#657b83;">(</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">respawn.bin</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">rb</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">read</span><span style="color:#657b83;">()), </span><span style="color:#268bd2;">depth</span><span style="color:#657b83;">=</span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">)
 </span>
@@ -505,7 +505,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>yukaridaki bytecodun tahmini karsiligi su sekilde</p>
-<pre lang="python" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
 <span style="color:#859900;">while </span><span style="color:#657b83;">i &lt;= </span><span style="color:#6c71c4;">37</span><span style="color:#657b83;">:
 </span><span style="color:#657b83;">    a = </span><span style="color:#859900;">locals</span><span style="color:#657b83;">()</span><span style="color:#268bd2;">[f</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">a</span><span style="color:#657b83;">{i}</span><span style="color:#839496;">&quot;</span><span style="color:#268bd2;">]
 </span><span style="color:#657b83;">    b = </span><span style="color:#859900;">locals</span><span style="color:#657b83;">()</span><span style="color:#268bd2;">[f</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">b</span><span style="color:#657b83;">{i}</span><span style="color:#839496;">&quot;</span><span style="color:#268bd2;">]
@@ -515,7 +515,7 @@ yani constant degerler(fonksiyonlar gibi) hala kodumuzun icinde olabilir.</p>
 </span>
 </code></pre>
 <p>locals dinamik bir yapi fakat degiskenlere sadece bir defa atama gerceklestiriliyor. <strong>dis</strong> kutuphanesinden <strong>get_instruction</strong> fonksiyonunu kullanip kod uzerinden hizlica construct edilebilir</p>
-<pre style="background-color:#fdf6e3;" lang="python"><code>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
 <span style="color:#268bd2;">STORE_FAST </span><span style="color:#657b83;">= opcode.opmap</span><span style="color:#268bd2;">[</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">STORE_FAST</span><span style="color:#839496;">&quot;</span><span style="color:#268bd2;">]
 </span><span style="color:#268bd2;">LOAD_CONST </span><span style="color:#657b83;">= opcode.opmap</span><span style="color:#268bd2;">[</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">LOAD_CONST</span><span style="color:#839496;">&quot;</span><span style="color:#268bd2;">]
 </span><span style="color:#657b83;">

