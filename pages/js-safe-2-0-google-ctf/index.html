@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      max-width: 70ch;
+      margin: auto;
+      line-height: 1.75;
+      font-size: 1.25em;
+    }
+
+    pre {
+      overflow: auto;
+    }
+
+    nav ul {
+      background: #faca46;
+      text-align: center;
+    }
+
+    nav ul li {
+      display: inline-block;
+      color: white;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="https://github.com/i64">Git</a></li>
+  </ul>
+</nav><h1>JS Safe 2.0 - Google CTF</h1>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">You stumbled upon someone&#39;s &quot;JS Safe&quot; on the web. It&#39;s a simple HTML file that can store secrets in the browser&#39;s localStorage. This means that you won&#39;t be able to extract any secret from it (the secrets are on the computer of the owner), but it looks like it was hand-crafted to work only with the password of the owner..
+</span>
+</code></pre>
+<p><a href="https://github.com/CyberSaxosTiGER/CyberSaxosTiGER.github.io/blob/master/files/4dead099e841668a8d86e36fcde8099ce134c195da9863dfb9039043d366942d.zip">Ek</a></p>
+<p>Sayfayı incelemeye başlayalım</p>
+<pre lang="html" style="background-color:#fdf6e3;"><code>
+<span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">input </span><span style="color:#b58900;">id</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">keyhole</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">autofocus onchange</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#b58900;">open_safe</span><span style="color:#657b83;">()</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">placeholder</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">🔑</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span>
+</code></pre>
+<p>id'i <strong>keyhole</strong> olan inputun onchange eventinde <strong>opensafe()</strong> fonksiyonunu çağırdığını görüyoruz. O zaman <strong>opensafe()</strong> fonksiyonuna bakacağız</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#268bd2;">function </span><span style="color:#b58900;">open_safe</span><span style="color:#657b83;">() {
+</span><span style="color:#657b83;">    keyhole.disabled = </span><span style="color:#b58900;">true</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    password = </span><span style="color:#839496;">/</span><span style="color:#859900;">^</span><span style="color:#2aa198;">CTF{(</span><span style="color:#cb4b16;">[0-9a-zA-Z_@!?-]</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)}</span><span style="color:#859900;">$</span><span style="color:#839496;">/</span><span style="color:#657b83;">.</span><span style="color:#b58900;">exec</span><span style="color:#657b83;">(keyhole.value);
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">password </span><span style="color:#859900;">|| !</span><span style="color:#b58900;">x</span><span style="color:#657b83;">(password</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">)) </span><span style="color:#859900;">return document</span><span style="color:#657b83;">.body.className = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">denied</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">document</span><span style="color:#657b83;">.body.className = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">granted</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    password = </span><span style="color:#859900;">Array</span><span style="color:#657b83;">.</span><span style="color:#b58900;">from</span><span style="color:#657b83;">(password</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">).</span><span style="color:#b58900;">map</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">c =&gt; </span><span style="color:#657b83;">c.</span><span style="color:#b58900;">charCodeAt</span><span style="color:#657b83;">());
+</span><span style="color:#657b83;">    encrypted = JSON.</span><span style="color:#b58900;">parse</span><span style="color:#657b83;">(localStorage.content </span><span style="color:#859900;">|| </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    content.value = encrypted.</span><span style="color:#b58900;">map</span><span style="color:#657b83;">((</span><span style="color:#268bd2;">c</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">i</span><span style="color:#657b83;">) </span><span style="color:#268bd2;">=&gt; </span><span style="color:#657b83;">c </span><span style="color:#859900;">^ </span><span style="color:#657b83;">password</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">i % password.length</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">).</span><span style="color:#b58900;">map</span><span style="color:#657b83;">(</span><span style="color:#859900;">String</span><span style="color:#657b83;">.fromCharCode).</span><span style="color:#b58900;">join</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">)
+</span><span style="color:#657b83;">}
+</span>
+</code></pre>
+<p><strong>password</strong> değişkenine <strong>keyhole</strong> içeriğini regex'e göre ayırdığını görüyoruz.</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">eğer `CTF{ABC}` girersek
+</span><span style="color:#657b83;">`password[0]` =&gt;  `CTF{ABC}`
+</span><span style="color:#657b83;">`password[1]` =&gt;  `ABC`
+</span>
+</code></pre>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">password </span><span style="color:#859900;">|| !</span><span style="color:#b58900;">x</span><span style="color:#657b83;">(password</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">)) </span><span style="color:#859900;">return document</span><span style="color:#657b83;">.body.className = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">denied</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
+</span>
+</code></pre>
+<p>yani şuanlık <strong>opensafe()</strong> fonksiyonunu bırakıp <strong>x()</strong> fonksiyonuna bakacağız</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#268bd2;">function </span><span style="color:#b58900;">x</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">х</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">    ord = </span><span style="color:#859900;">Function</span><span style="color:#657b83;">.</span><span style="color:#859900;">prototype</span><span style="color:#657b83;">.call.</span><span style="color:#b58900;">bind</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">.charCodeAt);
+</span><span style="color:#657b83;">    chr = </span><span style="color:#859900;">String</span><span style="color:#657b83;">.fromCharCode;
+</span><span style="color:#657b83;">    str = </span><span style="color:#859900;">String</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    </span><span style="color:#268bd2;">function </span><span style="color:#b58900;">h</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">s</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">for </span><span style="color:#657b83;">(i = </span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">; i != s.length; i++) {
+</span><span style="color:#657b83;">            a = ((</span><span style="color:#859900;">typeof </span><span style="color:#657b83;">a == </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">undefined</span><span style="color:#839496;">&#39; </span><span style="color:#859900;">? </span><span style="color:#6c71c4;">1 </span><span style="color:#859900;">: </span><span style="color:#657b83;">a) + </span><span style="color:#b58900;">ord</span><span style="color:#657b83;">(</span><span style="color:#b58900;">str</span><span style="color:#657b83;">(s</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">i</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">))) % </span><span style="color:#6c71c4;">65521</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">            b = ((</span><span style="color:#859900;">typeof </span><span style="color:#657b83;">b == </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">undefined</span><span style="color:#839496;">&#39; </span><span style="color:#859900;">? </span><span style="color:#6c71c4;">0 </span><span style="color:#859900;">: </span><span style="color:#657b83;">b) + a) % </span><span style="color:#6c71c4;">65521
+</span><span style="color:#657b83;">        }
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">return </span><span style="color:#b58900;">chr</span><span style="color:#657b83;">(b </span><span style="color:#859900;">&gt;&gt; </span><span style="color:#6c71c4;">8</span><span style="color:#657b83;">) + </span><span style="color:#b58900;">chr</span><span style="color:#657b83;">(b </span><span style="color:#859900;">&amp; </span><span style="color:#6c71c4;">0xFF</span><span style="color:#657b83;">) + </span><span style="color:#b58900;">chr</span><span style="color:#657b83;">(a </span><span style="color:#859900;">&gt;&gt; </span><span style="color:#6c71c4;">8</span><span style="color:#657b83;">) + </span><span style="color:#b58900;">chr</span><span style="color:#657b83;">(a </span><span style="color:#859900;">&amp; </span><span style="color:#6c71c4;">0xFF</span><span style="color:#657b83;">)
+</span><span style="color:#657b83;">    }
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">    </span><span style="color:#268bd2;">function </span><span style="color:#b58900;">c</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">a</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">b</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">c</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">for </span><span style="color:#657b83;">(i = </span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">; i != a.length; i++) c = (c </span><span style="color:#859900;">|| </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">) + </span><span style="color:#b58900;">chr</span><span style="color:#657b83;">(</span><span style="color:#b58900;">ord</span><span style="color:#657b83;">(</span><span style="color:#b58900;">str</span><span style="color:#657b83;">(a</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">i</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">)) </span><span style="color:#859900;">^ </span><span style="color:#b58900;">ord</span><span style="color:#657b83;">(</span><span style="color:#b58900;">str</span><span style="color:#657b83;">(b</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">i % b.length</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">)));
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">return </span><span style="color:#657b83;">c
+</span><span style="color:#657b83;">    }
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">for </span><span style="color:#657b83;">(a = </span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">; a != </span><span style="color:#6c71c4;">1000</span><span style="color:#657b83;">; a++) </span><span style="color:#859900;">debugger</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    x = </span><span style="color:#b58900;">h</span><span style="color:#657b83;">(</span><span style="color:#b58900;">str</span><span style="color:#657b83;">(x));
+</span><span style="color:#657b83;">    source = </span><span style="color:#839496;">/</span><span style="color:#2aa198;">Ӈ#7ùª9¨M¤À</span><span style="color:#cb4b16;">.</span><span style="color:#2aa198;">áÔ¥6¦¨¹</span><span style="color:#cb4b16;">.</span><span style="color:#2aa198;">ÿÓÂ</span><span style="color:#cb4b16;">.</span><span style="color:#2aa198;">Ö£JºÓ¹WþÊmãÖÚG¤¢dÈ9&amp;òªћ#³­1᧨</span><span style="color:#839496;">/</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">source</span><span style="color:#657b83;">.</span><span style="color:#b58900;">toString </span><span style="color:#657b83;">= </span><span style="color:#268bd2;">function </span><span style="color:#657b83;">() {
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">return </span><span style="color:#b58900;">c</span><span style="color:#657b83;">(source, x)
+</span><span style="color:#657b83;">    };
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">try </span><span style="color:#657b83;">{
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">console</span><span style="color:#657b83;">.</span><span style="color:#859900;">log</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">debug</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, source);
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">with</span><span style="color:#657b83;">(source) </span><span style="color:#859900;">return eval</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">eval(c(source,x))</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
+</span><span style="color:#657b83;">    } </span><span style="color:#859900;">catch </span><span style="color:#657b83;">(e) {}
+</span><span style="color:#657b83;">}
+</span><span style="color:#657b83;">
+</span>
+</code></pre>
+<p>kodu incelemeye başladık ve burada bir anti-debugger konulmuş</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#859900;">for </span><span style="color:#657b83;">(a = </span><span style="color:#6c71c4;">0</span><span style="color:#657b83;">; a != </span><span style="color:#6c71c4;">1000</span><span style="color:#657b83;">; a++) </span><span style="color:#859900;">debugger</span><span style="color:#657b83;">;
+</span>
+</code></pre>
+<p><strong>a=1000</strong> diyip yolumuza devam ediyoruz</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">x = </span><span style="color:#b58900;">h</span><span style="color:#657b83;">(</span><span style="color:#b58900;">str</span><span style="color:#657b83;">(x));
+</span>
+</code></pre>
+<p>Diye hileli bir satır var burada. <strong>function x(х)</strong> diye belirtilmiş. <strong>h(str(x))</strong> ve buradaki <strong>x</strong> değişken <strong>x</strong> değil, fonksiyon olan <strong>x</strong> yani <strong>x = h(str(x));</strong> degeri sabit. <strong>x</strong> fonksiyonunu değiştirmeden çalıştırıp <strong>x</strong> değerini çekiyoruz.</p>
+<p>Yani x fonksiyonuna paslanan değerin hiçbir önemi yok</p>
+<p><strong>x = h(str(x));</strong>'den sonra <strong>x</strong>'in son hali <strong>[130,30,10,154]</strong> (unicode olduğu için charcode halini yazdık) <strong>a = 2714</strong> ve <strong>b = 33310</strong> olduğunu gözlemledik.</p>
+<p><strong>c</strong> fonksiyonuna <strong>source</strong> değişkenini <strong>x</strong>'in son halini yolladığımızda</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">c(source,x);
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">&#39;х==c(\&#39;¢×&amp;Ê´cÊ¯¬$¶³´}ÍÈ´T©Ð8Í³Í|Ô÷aÈÐÝ&amp;¨þJ\&#39;,h(х))//᧢&#39;
+</span>
+</code></pre>
+<p>şifreli textimizi öğrendik</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">c = (c </span><span style="color:#859900;">|| </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">) + </span><span style="color:#b58900;">chr</span><span style="color:#657b83;">(</span><span style="color:#b58900;">ord</span><span style="color:#657b83;">(</span><span style="color:#b58900;">str</span><span style="color:#657b83;">(a</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">i</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">)) </span><span style="color:#859900;">^ </span><span style="color:#b58900;">ord</span><span style="color:#657b83;">(</span><span style="color:#b58900;">str</span><span style="color:#657b83;">(b</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">i % b.length</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">)))
+</span>
+</code></pre>
+<p>şifreli texti decrypt etmek için <strong>key</strong>'i bilmemiz gerekiyor. <strong>([0-9a-zA-Z_@!?-]+)</strong> regexine uygun bir şekilde çıktı veren şekilde <strong>xor</strong>'lamamız gerek.</p>
+<p>bildiklerimiz</p>
+<ul>
+<li>key uzunluğunun 4 hane olması</li>
+<li>0-255 arası range olduğu</li>
+<li>her 4 cycleda keyin tekrar edeceği</li>
+<li>çıktının <strong>([0-9a-zA-Z_@!?-]+)</strong>'e uygun olacağı</li>
+</ul>
+<p>yapılacaklar</p>
+<ul>
+<li>regex'e uygun char listesi oluşturmak</li>
+<li>4 defa dönecek bir for</li>
+<li>255 defa dönecek diğer bir for</li>
+</ul>
+<p>eğer key 4 defada bir tekrar ediyorsa her defasında aynı keyi denemeye her 4. karakterde aynı keyi deniyerek false positive oranını düşürürüz</p>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
+<span style="color:#657b83;">encrypted_text = (</span><span style="color:#6c71c4;">162</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">215</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">38</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">129</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">202</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">180</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">99</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">202</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">175</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">172</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">36</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">182</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">179</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">180</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">125</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">205</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">200</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">180</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">84</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">151</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">169</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">208</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">56</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">205</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">179</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">205</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">124</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">212</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">156</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">247</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">97</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">200</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">208</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">221</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">38</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">155</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">168</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">254</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">74</span><span style="color:#657b83;">)
+</span>
+</code></pre>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
+<span style="color:#657b83;">valid_char_range = [</span><span style="color:#859900;">ord</span><span style="color:#657b83;">(char) </span><span style="color:#859900;">for </span><span style="color:#657b83;">char </span><span style="color:#859900;">in </span><span style="color:#657b83;">(string.ascii_letters + string.digits  + </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">_@!?-</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)]
+</span>
+</code></pre>
+<pre style="background-color:#fdf6e3;" lang="python"><code>
+<span style="color:#859900;">for </span><span style="color:#657b83;">needle </span><span style="color:#859900;">in range</span><span style="color:#657b83;">(</span><span style="color:#6c71c4;">4</span><span style="color:#657b83;">):
+</span><span style="color:#657b83;">    choices = </span><span style="color:#859900;">list</span><span style="color:#657b83;">(</span><span style="color:#859900;">range</span><span style="color:#657b83;">(</span><span style="color:#6c71c4;">256</span><span style="color:#657b83;">))
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">for </span><span style="color:#657b83;">encrypted_chunk </span><span style="color:#859900;">in </span><span style="color:#657b83;">encrypted_text</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">needle::</span><span style="color:#6c71c4;">4</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">        choices = [
+</span><span style="color:#657b83;">            choice 
+</span><span style="color:#657b83;">            </span><span style="color:#859900;">for </span><span style="color:#657b83;">choice </span><span style="color:#859900;">in </span><span style="color:#657b83;">choices
+</span><span style="color:#657b83;">            </span><span style="color:#859900;">if </span><span style="color:#657b83;">(choice ^ encrypted_chunk) </span><span style="color:#859900;">in </span><span style="color:#657b83;">valid_char_range
+</span><span style="color:#657b83;">        ]
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">print</span><span style="color:#657b83;">(</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">key:</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, choices)
+</span>
+</code></pre>
+<p>çıktı ise</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">key: [253]
+</span><span style="color:#657b83;">key: [149, 153]
+</span><span style="color:#657b83;">key: [21]
+</span><span style="color:#657b83;">key: [249]
+</span>
+</code></pre>
+<p><strong>c</strong> fonksiyonun sifreli texti ve keyi yolladigimizda</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#859900;">&gt; </span><span style="color:#657b83;">key = </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">.</span><span style="color:#b58900;">join</span><span style="color:#657b83;">((</span><span style="color:#6c71c4;">253</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">153</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">21</span><span style="color:#657b83;">, </span><span style="color:#6c71c4;">249</span><span style="color:#657b83;">))
+</span><span style="color:#859900;">&gt; </span><span style="color:#b58900;">c</span><span style="color:#657b83;">(encrypted_text, key)
+</span><span style="color:#657b83;">
+</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">_N3x7-v3R51ON-h45-AnTI-4NTi-ant1-D3bUg_</span><span style="color:#839496;">&#39;
+</span>
+</code></pre>
+<p>Ve flag</p>
+<p><code>CTF{_N3x7-v3R51ON-h45-AnTI-4NTi-ant1-D3bUg_}</code></p>
+</html>

