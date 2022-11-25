@@ -107,7 +107,7 @@
 </ul>
 <h4>Server-side kod inceleme</h4>
 <p>Back-end tarafını bizimle paylaşmıştı <a href="https://github.com/CyberSaxosTiGER/CyberSaxosTiGER.github.io/blob/master/files/server.js">server.js</a></p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#268bd2;">const </span><span style="color:#859900;">http </span><span style="color:#657b83;">= </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">http</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
 </span><span style="color:#268bd2;">const </span><span style="color:#657b83;">express = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">express</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);
 </span><span style="color:#268bd2;">const </span><span style="color:#657b83;">cookieParser = </span><span style="color:#b58900;">require</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">cookie-parser</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">)
@@ -118,19 +118,19 @@
 </span>
 </code></pre>
 <p>Temal kütüphane importları ve <strong>admin.js</strong>'i import ediyor. Malesef <strong>admin.js</strong>'e erişimimiz yok</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#268bd2;">const </span><span style="color:#657b83;">app = </span><span style="color:#b58900;">express</span><span style="color:#657b83;">();
 </span><span style="color:#657b83;">app.</span><span style="color:#b58900;">set</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">etag</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#b58900;">false</span><span style="color:#657b83;">);
 </span><span style="color:#657b83;">app.</span><span style="color:#b58900;">use</span><span style="color:#657b83;">(</span><span style="color:#b58900;">cookieParser</span><span style="color:#657b83;">());
 </span>
 </code></pre>
 <p><strong>app.set('etag', false)</strong> entity-tag kapatılmış. Anlayacağımız web-cache validation yok.</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">app.</span><span style="color:#b58900;">use</span><span style="color:#657b83;">(admin.middleware);
 </span>
 </code></pre>
 <p><strong>flag</strong> cookiesi'ni kontrol edip admin mi değil mi diye kontrol ediyor</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#657b83;">app.</span><span style="color:#b58900;">use</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">next</span><span style="color:#657b83;">) {
 </span><span style="color:#657b83;">  </span><span style="color:#859900;">if </span><span style="color:#657b83;">(req.cookies.banned) {
 </span><span style="color:#657b83;">    res.</span><span style="color:#b58900;">sendStatus</span><span style="color:#657b83;">(</span><span style="color:#6c71c4;">403</span><span style="color:#657b83;">);
@@ -142,7 +142,7 @@
 </span>
 </code></pre>
 <p>Kullanıcı'nın banlı olup olmadığını kontrol ediyor. Eğer banlı ise <strong>403</strong> sayfasına yönlendiriyor.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#657b83;">app.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, (</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) </span><span style="color:#268bd2;">=&gt; </span><span style="color:#657b83;">res.</span><span style="color:#b58900;">redirect</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">/room/</span><span style="color:#657b83;">${</span><span style="color:#b58900;">uuidv4</span><span style="color:#657b83;">()}</span><span style="color:#2aa198;">/</span><span style="color:#839496;">`</span><span style="color:#657b83;">));
 </span><span style="color:#268bd2;">let </span><span style="color:#657b83;">roomPath = </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/room/:room([0-9a-f-]{36})</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">app.</span><span style="color:#b58900;">get</span><span style="color:#657b83;">(roomPath + </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) {
@@ -160,12 +160,12 @@
 </span>
 </code></pre>
 <p>eğer <strong>/</strong> dizinine gidersek bize benzersiz bir id atayıp <strong>/static/index.html</strong>'in içeriğini göstercekmiş. Ayrıca <a href="https://www.netsparker.com.tr/blog/web-guvenligi/CSP-Content-Security-Policy/"><strong>CSP</strong></a> kısıtlamaları ve ayrıcalıkları verilmiş.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#839496;">&#39;</span><span style="color:#2aa198;">style-src </span><span style="color:#dc322f;">\&#39;</span><span style="color:#2aa198;">unsafe-inline</span><span style="color:#dc322f;">\&#39; \&#39;</span><span style="color:#2aa198;">self</span><span style="color:#dc322f;">\&#39;</span><span style="color:#839496;">&#39;
 </span>
 </code></pre>
 <p>kısmını unutmamakta fayda var. Yani inline şekilde olan style ayarlarına izin var.</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">app.</span><span style="color:#b58900;">all</span><span style="color:#657b83;">(roomPath + </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/send</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">async function</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">req</span><span style="color:#657b83;">, </span><span style="color:#268bd2;">res</span><span style="color:#657b83;">) {
 </span><span style="color:#657b83;">  </span><span style="color:#268bd2;">let </span><span style="color:#657b83;">room = req.params.room, {msg, name} = req.query, response = {}, arg;
 </span><span style="color:#657b83;">  </span><span style="color:#859900;">console</span><span style="color:#657b83;">.</span><span style="color:#859900;">log</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#657b83;">${room}</span><span style="color:#2aa198;"> &lt;-- (</span><span style="color:#657b83;">${name}</span><span style="color:#2aa198;">):</span><span style="color:#839496;">`</span><span style="color:#657b83;">, msg)
@@ -209,7 +209,7 @@
 </span>
 </code></pre>
 <p><strong>Refer</strong> based CSRF koruması varmış.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#859900;">else if </span><span style="color:#657b83;">(msg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">0</span><span style="color:#268bd2;">] </span><span style="color:#657b83;">!= </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">) {
 </span><span style="color:#657b83;">    </span><span style="color:#b58900;">broadcast</span><span style="color:#657b83;">(room, {type: </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">msg</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, name, msg});
 </span><span style="color:#657b83;">}
@@ -225,7 +225,7 @@
 </span>
 </code></pre>
 <p><strong>/name</strong> ise isim değiştir</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/ban</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">ban (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">    </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">req.admin) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
@@ -263,7 +263,7 @@
 </span>
 </code></pre>
 <p>Escape fonksiyonuna göre <strong>['&gt;','&lt;',' &quot; ',' ' ']</strong> karakterleri yasaklı. Bu kısımıda not edelim.</p>
-<pre lang="js" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="js"><code>
 <span style="color:#268bd2;">function </span><span style="color:#b58900;">handle</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) {
 </span><span style="color:#657b83;">  ({
 </span><span style="color:#657b83;">    </span><span style="color:#b58900;">undefined</span><span style="color:#657b83;">(</span><span style="color:#268bd2;">data</span><span style="color:#657b83;">) {},
@@ -303,7 +303,7 @@
 </span>
 </code></pre>
 <p><strong>CSP</strong>'yi hatırlayalım. <strong>style-src</strong>, <strong>unsafe-inline</strong> olarak ayarlanmış.</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;"> </span><span style="color:#b58900;">display</span><span style="color:#657b83;">(</span><span style="color:#839496;">`</span><span style="color:#2aa198;">Successfully changed secret to &lt;span data-secret=&quot;</span><span style="color:#657b83;">${</span><span style="color:#b58900;">esc</span><span style="color:#657b83;">(</span><span style="color:#b58900;">cookie</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">))}</span><span style="color:#2aa198;">&quot;&gt;*****&lt;/span&gt;</span><span style="color:#839496;">`
 </span>
 </code></pre>
@@ -326,7 +326,7 @@
 <p>Flag değerini <strong>data-secret</strong> attribute'una değişen hali yazdığını hatırlayalım.</p>
 <p><strong>flag</strong>'i değiştirmeden <strong>data-secret</strong> değerine yazdırmamız gerekiyor.</p>
 <p><strong>server.js</strong>'e tekrar dönüp bakalım</p>
-<pre style="background-color:#fdf6e3;" lang="js"><code>
+<pre lang="js" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">case </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">/secret</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">:
 </span><span style="color:#859900;">if </span><span style="color:#657b83;">(</span><span style="color:#859900;">!</span><span style="color:#657b83;">(arg = msg.</span><span style="color:#b58900;">match</span><span style="color:#657b83;">(</span><span style="color:#839496;">/</span><span style="color:#dc322f;">\/</span><span style="color:#2aa198;">secret (</span><span style="color:#cb4b16;">.</span><span style="color:#859900;">+</span><span style="color:#2aa198;">)</span><span style="color:#839496;">/</span><span style="color:#657b83;">))) </span><span style="color:#859900;">break</span><span style="color:#657b83;">;
 </span><span style="color:#657b83;">res.</span><span style="color:#b58900;">setHeader</span><span style="color:#657b83;">(</span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">Set-Cookie</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">, </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">flag=</span><span style="color:#839496;">&#39; </span><span style="color:#657b83;">+ arg</span><span style="color:#268bd2;">[</span><span style="color:#6c71c4;">1</span><span style="color:#268bd2;">] </span><span style="color:#839496;">&#39;</span><span style="color:#2aa198;">; Path=/; Max-Age=31536000</span><span style="color:#839496;">&#39;</span><span style="color:#657b83;">);

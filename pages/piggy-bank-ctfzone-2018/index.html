@@ -54,7 +54,7 @@
 <p>Uye olundugunda <strong>For developers</strong> adinda daha aktif olmayan bir karsimiza cikiyor.
 <img src="2.png" alt="" /></p>
 <p>Fakat kaynak kodunda assagidaki ifadeleri gozlemleyebiliyoruz.</p>
-<pre lang="html" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="html"><code>
 <span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">div </span><span style="color:#b58900;">class</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">tab tab_5</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;</span><span style="color:#657b83;">Especially for pig-developers, we have the coolest api, which they will soon be able to use!</span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">div</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;!-- Link to the API (http://web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one/api/bankservice.wsdl.php) (Testing stage) --&gt;
 </span><span style="color:#657b83;">    </span><span style="color:#93a1a1;">&lt;/</span><span style="color:#268bd2;">div</span><span style="color:#93a1a1;">&gt;
@@ -129,7 +129,7 @@
 </code></pre>
 <p>Buna forma gore iki adet <code>SOAP API</code> endpointine sahip oldugumuzu ogrendik.</p>
 <p>Ilki bakiye sorgulama</p>
-<pre lang="xml" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
 <span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Envelope </span><span style="color:#b58900;">xmlns:xsi</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema-instance</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsd</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:soapenv</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/envelope/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:urn</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Header</span><span style="color:#93a1a1;">/&gt;
 </span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Body</span><span style="color:#93a1a1;">&gt;
@@ -141,7 +141,7 @@
 </span>
 </code></pre>
 <p>İkincisi ise bakiye yollama</p>
-<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<pre lang="xml" style="background-color:#fdf6e3;"><code>
 <span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Envelope </span><span style="color:#b58900;">xmlns:xsi</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema-instance</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsd</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:soapenv</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/envelope/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:urn</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Header</span><span style="color:#93a1a1;">/&gt;
 </span><span style="color:#657b83;">  </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">soapenv:Body</span><span style="color:#93a1a1;">&gt;
@@ -156,7 +156,7 @@
 </span>
 </code></pre>
 <p>Ilk kosul(bakiye yollama) icin api token'e ihtiyac duyuyoruz. Buyuk ihtimal sorunun cozumu de bununla alakali olacagindan dolayi bunu kurcalamayabiliriz.</p>
-<pre style="background-color:#fdf6e3;" lang="http"><code>
+<pre lang="http" style="background-color:#fdf6e3;"><code>
 <span style="color:#657b83;">POST /home/transfer.php HTTP/1.1
 </span><span style="color:#657b83;">Host: web-05.v7frkwrfyhsjtbpfcppnu.ctfz.one
 </span><span style="color:#657b83;">User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0
@@ -194,7 +194,7 @@
 </span>
 </code></pre>
 <p><strong>amount</strong> kısmına ise;</p>
-<pre lang="xml" style="background-color:#fdf6e3;"><code>
+<pre style="background-color:#fdf6e3;" lang="xml"><code>
 <span style="color:#657b83;">--&gt; 200
 </span>
 </code></pre>
@@ -397,7 +397,7 @@
 </span><span style="color:#657b83;">T 162.158.89.252:15529 -&gt; my.ip.v4.addr:80 [AF]
 </span>
 </code></pre>
-<pre style="background-color:#fdf6e3;" lang="xml"><code>
+<pre lang="xml" style="background-color:#fdf6e3;"><code>
 <span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">SOAP-ENV:Envelope </span><span style="color:#b58900;">SOAP-ENV:encodingStyle</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:SOAP-ENC</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/encoding/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:SOAP-ENV</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://schemas.xmlsoap.org/soap/envelope/</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:ns1</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">urn:Bank</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsd</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema</span><span style="color:#839496;">&quot; </span><span style="color:#b58900;">xmlns:xsi</span><span style="color:#657b83;">=</span><span style="color:#839496;">&quot;</span><span style="color:#2aa198;">http://www.w3.org/2001/XMLSchema-instance</span><span style="color:#839496;">&quot;</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#657b83;">      </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">SOAP-ENV:Body</span><span style="color:#93a1a1;">&gt;
 </span><span style="color:#657b83;">        </span><span style="color:#93a1a1;">&lt;</span><span style="color:#268bd2;">ns1:internalTransfer</span><span style="color:#93a1a1;">&gt;
